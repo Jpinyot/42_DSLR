@@ -1,0 +1,30 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    CMakeLists.txt                                     :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2020/02/12 12:28:11 by jpinyot           #+#    #+#              #
+#    Updated: 2020/02/22 17:38:30 by jpinyot          ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+cmake_minimum_required(VERSION 3.10)
+set (CMAKE_CXX_STANDARD 11)
+
+# set the project name
+project(DSLR)
+
+# add the executable
+# DSLR
+add_executable(	DSLR
+				)
+			set(HEADER_FILES	DSLR
+					)
+
+
+# dependencies for Python.h, used for ploting
+find_package(Python2 COMPONENTS Development NumPy)
+target_include_directories(ft_linear_regression PRIVATE ${Python2_INCLUDE_DIRS} ${Python2_NumPy_INCLUDE_DIRS})
+target_link_libraries(ft_linear_regression Python2::Python Python2::NumPy)

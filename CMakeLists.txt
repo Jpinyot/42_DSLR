@@ -6,7 +6,7 @@
 #    By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/12 12:28:11 by jpinyot           #+#    #+#              #
-#    Updated: 2020/02/22 17:38:30 by jpinyot          ###   ########.fr        #
+#    Updated: 2020/02/25 09:13:23 by jpinyot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,12 +19,12 @@ project(DSLR)
 # add the executable
 # DSLR
 add_executable(	DSLR
-				)
+				includes/csvReader.cpp)
 			set(HEADER_FILES	DSLR
-					)
+								includes/csvReader.cpp)
 
 
 # dependencies for Python.h, used for ploting
-find_package(Python2 COMPONENTS Development NumPy)
-target_include_directories(ft_linear_regression PRIVATE ${Python2_INCLUDE_DIRS} ${Python2_NumPy_INCLUDE_DIRS})
-target_link_libraries(ft_linear_regression Python2::Python Python2::NumPy)
+# find_package(Python2 COMPONENTS Development NumPy)
+# target_include_directories(ft_linear_regression PRIVATE ${Python2_INCLUDE_DIRS} ${Python2_NumPy_INCLUDE_DIRS})
+# target_link_libraries(ft_linear_regression Python2::Python Python2::NumPy)

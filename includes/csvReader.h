@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 07:39:51 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/25 10:27:04 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/25 11:10:36 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,15 @@ class CsvSubsets : public CsvLine
 		vector<int>		subsetsIndex_;
 		int				size_;
 
+		int		indexOf(int indx)
+		{
+			for (int i = 0; i < subsetsIndex_.size(); i++){
+				if (subsetsIndex_[i] == indx){
+					return i;
+				}
+			}
+			return -1;
+		}
 	public:
 		CsvSubsets():
 			deprecates_(0), subsetsIndex_(0), size_(1)
@@ -67,9 +76,18 @@ class CsvSubsets : public CsvLine
 			subsetsIndex_.emplace_back(0);
 			int	nextDelimeter = 0;
 			while ((nextDelimeter = this->find(DELIMETER, nextDelimeter + 1)) != -1){
-				subsetsIndex_.emplace_back(nextDelimeter);
+				subsetsIndex_.emplace_back(nextDelimeter + 1);
 				size_ += 1;
 			}
+		}
+		bool	deprecate(string s)
+		{
+			int pos = 0;
+			if ((pos = this->find(s)) == -1){
+				return false;
+			}
+			deprecates_.emplace_back(indexOf(pos));
+			return true;
 		}
 };
 
@@ -92,6 +110,7 @@ class CsvData
 		getData();
 	};
 	virtual	~CsvData() {};
+	bool	deprecate(string s) {return subsets_.deprecate(s);}
 };
 
 /* class my_ctype : public std::ctype<char> { */

@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 07:41:28 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/25 10:28:52 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/25 11:10:21 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@ void	CsvData::getData()
 		throw runtime_error(strError);
 	}
 	subsets_.indexing();
+	subsets_.deprecate("Flying");
 	/* cout << subsets_ << "\n\n"; */
-	string line = "";
+	CsvLine line;
 	while (getline(file,line)){
 		lines_.emplace_back(line);
-		cout << lines_.back();
+		/* cout << lines_.back(); */
 	}
-	
 }
 
 int	main()

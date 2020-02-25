@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 07:39:51 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/25 11:10:36 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/25 12:07:35 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,27 +25,17 @@
 
 using namespace std;
 
-	/* line trasnformet to a vector of double */
-/* class CsvVector : public vector<double> */
-/* { */
-	/* private: */
-	/* 	string			line_; */
-
-	/* public: */
-	/* 	CsvVector(): */
-	/* 		line_(0) */
-	/* 	{}; */
-/* }; */
-
 	/* line from the csv file */
 class CsvLine : public string
 {
 	private:
+		/* int	size_; */
 
 	public:
 		CsvLine()
 		{};
 		virtual ~CsvLine() {};
+		vector<string>	toStrings(vector<int> desprecate={});
 };
 
 	/* the data subsets, data descriptors */
@@ -56,39 +46,18 @@ class CsvSubsets : public CsvLine
 		vector<int>		subsetsIndex_;
 		int				size_;
 
-		int		indexOf(int indx)
-		{
-			for (int i = 0; i < subsetsIndex_.size(); i++){
-				if (subsetsIndex_[i] == indx){
-					return i;
-				}
-			}
-			return -1;
-		}
+		int		indexOf(int indx);
+
 	public:
 		CsvSubsets():
 			deprecates_(0), subsetsIndex_(0), size_(1)
 		{};
 		virtual ~CsvSubsets() {};
 
-		void	indexing()
-		{
-			subsetsIndex_.emplace_back(0);
-			int	nextDelimeter = 0;
-			while ((nextDelimeter = this->find(DELIMETER, nextDelimeter + 1)) != -1){
-				subsetsIndex_.emplace_back(nextDelimeter + 1);
-				size_ += 1;
-			}
-		}
-		bool	deprecate(string s)
-		{
-			int pos = 0;
-			if ((pos = this->find(s)) == -1){
-				return false;
-			}
-			deprecates_.emplace_back(indexOf(pos));
-			return true;
-		}
+		void	indexing();
+		bool	deprecate(const string& s);
+		
+		vector<int>	deprecates() {return deprecates_;}
 };
 
 	/* main class */
@@ -99,7 +68,6 @@ class CsvData
 		vector<CsvLine>			lines_;
 		vector<vector<double> >	data_;
 		CsvSubsets				subsets_;
-		/* vector<CsvVector>	data_; */
 
 		void	getData();
 
@@ -110,7 +78,9 @@ class CsvData
 		getData();
 	};
 	virtual	~CsvData() {};
-	bool	deprecate(string s) {return subsets_.deprecate(s);}
+	vector<vector<string> >	strVect();
+
+	bool					deprecate(const string& s) {return subsets_.deprecate(s);}
 };
 
 /* class my_ctype : public std::ctype<char> { */

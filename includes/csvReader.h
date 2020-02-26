@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 07:39:51 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/26 09:32:08 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/26 09:36:59 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,8 @@ class CsvData
 	virtual	~CsvData() {};
 	vector<vector<string> >	toMatrixString();
 	vector<vector<double> >	toMatrixDouble();
-	vector<vector<double> >	toVectrDouble(const int& id);
+	vector<double>			toVectorDouble(const int& id);
+	vector<string>			toVectorString(const int& id);
 
 	string					line(const int lineNum) {return static_cast<string>(lines_[lineNum]);}
 	string					infoLine() {return static_cast<string>(subsets_);}

@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 07:41:28 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/26 09:32:36 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/26 09:38:28 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,26 @@ vector<vector<double> >	CsvData::toMatrixDouble()
 		ret.emplace_back(lines_[i].toDouble(deprecates));
 	}
 	return ret;
+}
+
+vector<double>	CsvData::toVectorDouble(const int& id)
+{
+	if (id < lines_.size()){
+		return lines_[id].toDouble();
+	}
+	else {
+		return {};
+	}
+}
+
+vector<string>	CsvData::toVectorString(const int& id)
+{
+	if (id < lines_.size()){
+		return lines_[id].toStrings();
+	}
+	else {
+		return {};
+	}
 }
 
 

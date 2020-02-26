@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 07:39:51 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/26 09:36:59 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/26 10:15:35 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ class CsvLine : public string
 		virtual ~CsvLine() {};
 		vector<string>	toStrings(const vector<int>& desprecate={});
 		vector<double>	toDouble(const vector<int>& desprecate={});
+		string			toString(const int& id);
+		double			toDouble(const int& id);
 };
 
 	/* the data subsets, data descriptors */
@@ -47,13 +49,13 @@ class CsvSubsets : public CsvLine
 		vector<int>		deprecates_;
 		/* vector<int>		_; */
 		vector<int>		subsetsIndex_;
-		int				size_;
+		int				subsetsNum_;
 
 		int		indexOf(int indx);
 
 	public:
 		CsvSubsets():
-			deprecates_(0), subsetsIndex_(0), size_(1)
+			deprecates_(0), subsetsIndex_(0), subsetsNum_(0)
 		{};
 		virtual ~CsvSubsets() {};
 		void		indexing();
@@ -61,6 +63,7 @@ class CsvSubsets : public CsvLine
 		bool		deprecate(const int& num);
 		
 		vector<int>	deprecates() {return deprecates_;}
+		int			subsetsNum() {return subsetsNum_;}
 };
 
 	/* main class */
@@ -83,8 +86,10 @@ class CsvData
 	virtual	~CsvData() {};
 	vector<vector<string> >	toMatrixString();
 	vector<vector<double> >	toMatrixDouble();
-	vector<double>			toVectorDouble(const int& id);
 	vector<string>			toVectorString(const int& id);
+	vector<double>			toVectorDouble(const int& id);
+	/* vector<double>			toVectorDouble(const string& id); */
+	/* vector<string>			toVectorString(const string& id); */
 
 	string					line(const int lineNum) {return static_cast<string>(lines_[lineNum]);}
 	string					infoLine() {return static_cast<string>(subsets_);}

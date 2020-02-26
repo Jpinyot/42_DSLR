@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 07:41:28 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/26 09:38:28 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/26 10:19:41 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,40 @@ vector<double>	CsvLine::toDouble(const vector<int>& desprecate)
 	return ret;
 }
 
+string	CsvLine::toString(const int& id)
+{
+	int				nextDelimeter = 0;
+	int				passDelimeter = 0;
+	int				i = 0;
+	while ((nextDelimeter = this->find(DELIMETER, nextDelimeter + 1)) != -1){
+		if (id == i){
+			return this->substr(passDelimeter, nextDelimeter - passDelimeter);
+		}
+		passDelimeter = nextDelimeter + 1;
+		i ++;
+	}
+	return 0;
+}
+
+double	CsvLine::toDouble(const int& id)
+{
+	int				nextDelimeter = 0;
+	int				passDelimeter = 0;
+	int				i = 0;
+	while ((nextDelimeter = this->find(DELIMETER, nextDelimeter + 1)) != -1){
+		if (id == i){
+			return atof(this->substr(passDelimeter, nextDelimeter - passDelimeter).c_str());
+		}
+		passDelimeter = nextDelimeter + 1;
+		i ++;
+	}
+	return 0;
+}
+
 int		CsvSubsets::indexOf(int indx)
 {
 	for (int i = 0; i < subsetsIndex_.size(); i++){
 		if (subsetsIndex_[i] == indx){
-			cout << i << "\n\n";
 			return i;
 		}
 	}
@@ -77,7 +106,7 @@ void	CsvSubsets::indexing()
 	int	nextDelimeter = 0;
 	while ((nextDelimeter = this->find(DELIMETER, nextDelimeter + 1)) != -1){
 		subsetsIndex_.emplace_back(nextDelimeter + 1);
-		size_ += 1;
+		subsetsNum_ += 1;
 	}
 }
 
@@ -93,7 +122,7 @@ bool	CsvSubsets::deprecate(const string& s)
 
 bool	CsvSubsets::deprecate(const int& num)
 {
-	if (num > size_){
+	if (num > subsetsNum_){
 		return false;
 	}
 	else {
@@ -141,41 +170,56 @@ vector<vector<double> >	CsvData::toMatrixDouble()
 	return ret;
 }
 
-vector<double>	CsvData::toVectorDouble(const int& id)
-{
-	if (id < lines_.size()){
-		return lines_[id].toDouble();
-	}
-	else {
-		return {};
-	}
-}
-
 vector<string>	CsvData::toVectorString(const int& id)
 {
-	if (id < lines_.size()){
-		return lines_[id].toStrings();
-	}
-	else {
+	if (id > subsets_.subsetsNum()){
 		return {};
 	}
+	vector<string> ret;
+	for (int i = 0; i < lines_.size(); i++){
+		ret.emplace_back(lines_[i].toString(id));
+	}
+	return ret;
 }
+
+vector<double>	CsvData::toVectorDouble(const int& id)
+{
+	if (id > subsets_.subsetsNum()){
+		return {};
+	}
+	vector<double> ret;
+	for (int i = 0; i < lines_.size(); i++){
+		ret.emplace_back(lines_[i].toDouble(id));
+	}
+	return ret;
+}
+
 
 
 int	main()
 {
 	CsvData data("files/dataset_train.csv");
+	data.deprecate("Index");
+	data.deprecate("Defense Against the Dark Arts");
+	data.deprecate("Charms");
+	data.deprecate("Herbology");
+	data.deprecate("Divination");
+	data.deprecate("Muggle Studies");
 	vector<vector<string> > dataStr =	data.toMatrixString();
 	vector<vector<double> > dataDoub =	data.toMatrixDouble();
+	/* vector<string> y =	data.toVectorString(19); */
+	vector<double> y =	data.toVectorDouble(0);
 
-	for( auto const& string_vec : dataDoub ){
-		for( auto const& s : string_vec ){
-        	cout << s << ' ';
-        	/* cout << s << ' '; */
-		}
-        cout << endl;
+	for ( auto const& coutY : y ){
+		cout << coutY << "\n";
 	}
-	/* cout << dataStr[0];d */
+	/* for( auto const& string_vec : dataDoub ){ */
+	/* 	for( auto const& s : string_vec ){ */
+        	/* cout << s << ' '; */
+        	/* /1* cout << s << ' '; *1/ */
+	/* 	} */
+        /* cout << endl; */
+	/* } */
 
 	return (0);
 }

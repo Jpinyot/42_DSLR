@@ -6,13 +6,13 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 07:41:28 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/25 12:17:18 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/26 09:32:36 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "csvReader.h"
 
-vector<string>	CsvLine::toStrings(vector<int> desprecate)
+vector<string>	CsvLine::toStrings(const vector<int>& desprecate)
 {
 	/* cout << *this << "\n\n"; */
 	vector<string>	ret = {};
@@ -32,6 +32,30 @@ vector<string>	CsvLine::toStrings(vector<int> desprecate)
 	}
 	if (!desprecate.size() || desprecate[despCnt] != i){
 		ret.emplace_back(this->substr(passDelimeter, this->size() - passDelimeter));
+	}
+	return ret;
+}
+
+vector<double>	CsvLine::toDouble(const vector<int>& desprecate)
+{
+	/* cout << *this << "\n\n"; */
+	vector<double>	ret = {};
+	int				nextDelimeter = 0;
+	int				passDelimeter = 0;
+	int				despCnt = 0;
+	int				i = 0;
+	while ((nextDelimeter = this->find(DELIMETER, nextDelimeter + 1)) != -1){
+		if (!desprecate.size() || desprecate[despCnt] != i){
+			ret.emplace_back(atof(this->substr(passDelimeter, nextDelimeter - passDelimeter).c_str()));
+		}
+		else {
+			despCnt ++;
+		}
+		passDelimeter = nextDelimeter + 1;
+		i ++;
+	}
+	if (!desprecate.size() || desprecate[despCnt] != i){
+		ret.emplace_back(atof(this->substr(passDelimeter, nextDelimeter - passDelimeter).c_str()));
 	}
 	return ret;
 }
@@ -67,6 +91,17 @@ bool	CsvSubsets::deprecate(const string& s)
 	return true;
 }
 
+bool	CsvSubsets::deprecate(const int& num)
+{
+	if (num > size_){
+		return false;
+	}
+	else {
+		deprecates_.emplace_back(num);
+		return true;
+	}
+}
+
 void	CsvData::getData()
 {
 	ifstream file(fileDescriptor_);
@@ -86,38 +121,41 @@ void	CsvData::getData()
 	}
 }
 
-vector<vector<string> >	CsvData::strVect()
+vector<vector<string> >	CsvData::toMatrixString()
 {
-	deprecate("Index");
-	deprecate("Flying");
 	vector<int> deprecates = subsets_.deprecates();
 	vector<vector<string> > strVect;
-	/* for (int i = 0; i < lines_.size(); i++){ */
-	/* 	strVect.emplace_back(lines_[i].toStrings()); */
-	/* } */
-		strVect.emplace_back(lines_[0].toStrings(deprecates));
+	for (int i = 0; i < lines_.size(); i++){
+		strVect.emplace_back(lines_[i].toStrings(deprecates));
+	}
 	return strVect;
+}
+
+vector<vector<double> >	CsvData::toMatrixDouble()
+{
+	vector<int> deprecates = subsets_.deprecates();
+	vector<vector<double> > ret;
+	for (int i = 0; i < lines_.size(); i++){
+		ret.emplace_back(lines_[i].toDouble(deprecates));
+	}
+	return ret;
 }
 
 
 int	main()
 {
 	CsvData data("files/dataset_train.csv");
-	vector<vector<string> > dataStr =	data.strVect();
+	vector<vector<string> > dataStr =	data.toMatrixString();
+	vector<vector<double> > dataDoub =	data.toMatrixDouble();
 
-	for( auto const& string_vec : dataStr ){
-    for( auto const& s : string_vec )
-        cout << s << endl;
+	for( auto const& string_vec : dataDoub ){
+		for( auto const& s : string_vec ){
+        	cout << s << ' ';
+        	/* cout << s << ' '; */
+		}
+        cout << endl;
 	}
 	/* cout << dataStr[0];d */
 
 	return (0);
 }
-
-/* int main() { */
-/*     for (int i=0; i<1800; i++) { */
-/*         for (int j=0; j<1800; j++) */
-/*             std::cout<<rand()/double(RAND_MAX)<<","; */
-/*         std::cout << "\n"; */
-/*     } */
-/* } */

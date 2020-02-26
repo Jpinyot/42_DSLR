@@ -6,10 +6,11 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 07:39:51 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/25 12:07:35 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/26 09:32:08 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -35,7 +36,8 @@ class CsvLine : public string
 		CsvLine()
 		{};
 		virtual ~CsvLine() {};
-		vector<string>	toStrings(vector<int> desprecate={});
+		vector<string>	toStrings(const vector<int>& desprecate={});
+		vector<double>	toDouble(const vector<int>& desprecate={});
 };
 
 	/* the data subsets, data descriptors */
@@ -43,6 +45,7 @@ class CsvSubsets : public CsvLine
 {
 	private:
 		vector<int>		deprecates_;
+		/* vector<int>		_; */
 		vector<int>		subsetsIndex_;
 		int				size_;
 
@@ -53,9 +56,9 @@ class CsvSubsets : public CsvLine
 			deprecates_(0), subsetsIndex_(0), size_(1)
 		{};
 		virtual ~CsvSubsets() {};
-
-		void	indexing();
-		bool	deprecate(const string& s);
+		void		indexing();
+		bool		deprecate(const string& s);
+		bool		deprecate(const int& num);
 		
 		vector<int>	deprecates() {return deprecates_;}
 };
@@ -78,54 +81,12 @@ class CsvData
 		getData();
 	};
 	virtual	~CsvData() {};
-	vector<vector<string> >	strVect();
+	vector<vector<string> >	toMatrixString();
+	vector<vector<double> >	toMatrixDouble();
+	vector<vector<double> >	toVectrDouble(const int& id);
 
+	string					line(const int lineNum) {return static_cast<string>(lines_[lineNum]);}
+	string					infoLine() {return static_cast<string>(subsets_);}
 	bool					deprecate(const string& s) {return subsets_.deprecate(s);}
+	bool					deprecate(const int& num) {return subsets_.deprecate(num);}
 };
-
-/* class my_ctype : public std::ctype<char> { */
-/* 	public: */
-/* 	    std::vector<mask> my_table; */
-/* 	public: */
-/* 		my_ctype(size_t refs=0): */
-/* 			my_table(table_size), std::ctype<char>(my_table.data(), false, refs) */ 
-/* 		{ */
-/* 			std::copy_n(classic_table(), table_size, my_table.data()); */
-/* 			my_table[',']=(mask)space; */
-/* 		} */
-/* }; */
-
-/* template <class T> */
-/* class converter { */
-/* 	public: */
-/* 		std::stringstream	buffer; */
-/* 		my_ctype			*m; */
-/* 		std::locale			l; */
-/* 	public: */
-/* 	    converter(): */
-/* 			m(new my_ctype), l(std::locale::classic(), m) */
-/* 		{ */
-/* 			buffer.imbue(l); */
-/* 		} */
-
-/*     	std::vector<T> operator()(std::string const &in) */
-/* 		{ */
-/*         	buffer.clear(); */
-/*         	buffer<<in; */
-/*         	return std::vector<T> {std::istream_iterator<T>(buffer),std::istream_iterator<T>()}; */        
-/*     	} */
-/* }; */
-
-/* int main() { */
-/*     std::ifstream						in("somefile.csv"); */
-/*     std::vector<std::vector<double>>	numbers; */
-
-/*     std::string			line; */
-/*     converter<double>	cvt; */
-
-/*     clock_t start=clock(); */
-/*     while (std::getline(in, line)) */
-/*         numbers.push_back(cvt(line)); */
-/*     clock_t stop=clock(); */
-/*     std::cout<<double(stop-start)/CLOCKS_PER_SEC << " seconds\n"; */
-/* } */

@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 07:41:28 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/26 10:19:41 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/26 11:04:04 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 vector<string>	CsvLine::toStrings(const vector<int>& desprecate)
 {
-	/* cout << *this << "\n\n"; */
 	vector<string>	ret = {};
 	int				nextDelimeter = 0;
 	int				passDelimeter = 0;
@@ -38,7 +37,6 @@ vector<string>	CsvLine::toStrings(const vector<int>& desprecate)
 
 vector<double>	CsvLine::toDouble(const vector<int>& desprecate)
 {
-	/* cout << *this << "\n\n"; */
 	vector<double>	ret = {};
 	int				nextDelimeter = 0;
 	int				passDelimeter = 0;
@@ -142,11 +140,9 @@ void	CsvData::getData()
 		throw runtime_error(strError);
 	}
 	subsets_.indexing();
-	/* cout << subsets_ << "\n\n"; */
 	CsvLine line;
 	while (getline(file,line)){
 		lines_.emplace_back(line);
-		/* cout << lines_.back(); */
 	}
 }
 
@@ -160,12 +156,20 @@ vector<vector<string> >	CsvData::toMatrixString()
 	return strVect;
 }
 
-vector<vector<double> >	CsvData::toMatrixDouble()
+vector<vector<double> >	CsvData::toMatrixDouble(const bool& hashData)
 {
 	vector<int> deprecates = subsets_.deprecates();
 	vector<vector<double> > ret;
+	if (hashData){			//working on hashTable
+
+	}
 	for (int i = 0; i < lines_.size(); i++){
-		ret.emplace_back(lines_[i].toDouble(deprecates));
+		if (hashData){
+
+		}
+		else {
+			ret.emplace_back(lines_[i].toDouble(deprecates));
+		}
 	}
 	return ret;
 }
@@ -205,21 +209,21 @@ int	main()
 	data.deprecate("Herbology");
 	data.deprecate("Divination");
 	data.deprecate("Muggle Studies");
-	vector<vector<string> > dataStr =	data.toMatrixString();
+	/* vector<vector<string> > dataStr =	data.toMatrixString(); */
 	vector<vector<double> > dataDoub =	data.toMatrixDouble();
 	/* vector<string> y =	data.toVectorString(19); */
-	vector<double> y =	data.toVectorDouble(0);
+	/* vector<double> y =	data.toVectorDouble(0); */
 
-	for ( auto const& coutY : y ){
-		cout << coutY << "\n";
-	}
-	/* for( auto const& string_vec : dataDoub ){ */
-	/* 	for( auto const& s : string_vec ){ */
-        	/* cout << s << ' '; */
-        	/* /1* cout << s << ' '; *1/ */
-	/* 	} */
-        /* cout << endl; */
+	/* for ( auto const& coutY : y ){ */
+	/* 	cout << coutY << "\n"; */
 	/* } */
+	for( auto const& string_vec : dataDoub ){
+		for( auto const& s : string_vec ){
+        	cout << s << ' ';
+        	/* cout << s << ' '; */
+		}
+        cout << endl;
+	}
 
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 07:39:51 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/26 10:15:35 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/26 11:02:38 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <map>
 /* #include <time.h> */
 /* #include <stdlib.h> */
 /* #include <locale> */
@@ -46,24 +47,29 @@ class CsvLine : public string
 class CsvSubsets : public CsvLine
 {
 	private:
-		vector<int>		deprecates_;
-		/* vector<int>		_; */
-		vector<int>		subsetsIndex_;
-		int				subsetsNum_;
+		bool					hasHash_;
+		vector<int>				deprecates_;
+		vector<int>				hashedData_;
+		vector<vector<string> >	hashTable_;
+		vector<int>				subsetsIndex_;
+		int						subsetsNum_;
 
 		int		indexOf(int indx);
 
 	public:
 		CsvSubsets():
-			deprecates_(0), subsetsIndex_(0), subsetsNum_(0)
+			hasHash_(false), deprecates_(0), hashedData_(0), hashTable_(0), subsetsIndex_(0), subsetsNum_(0)
 		{};
 		virtual ~CsvSubsets() {};
 		void		indexing();
 		bool		deprecate(const string& s);
 		bool		deprecate(const int& num);
+		bool		hashNeeded(const int& num);
 		
 		vector<int>	deprecates() {return deprecates_;}
 		int			subsetsNum() {return subsetsNum_;}
+
+		/* void		hashedData(const vector<vector<string> >& hashedData) {hashedData = } */
 };
 
 	/* main class */
@@ -85,7 +91,7 @@ class CsvData
 	};
 	virtual	~CsvData() {};
 	vector<vector<string> >	toMatrixString();
-	vector<vector<double> >	toMatrixDouble();
+	vector<vector<double> >	toMatrixDouble(const bool& hashData=false);
 	vector<string>			toVectorString(const int& id);
 	vector<double>			toVectorDouble(const int& id);
 	/* vector<double>			toVectorDouble(const string& id); */

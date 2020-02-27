@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 07:39:51 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/26 11:02:38 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/27 10:14:24 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,6 @@
 #include <vector>
 #include <string>
 #include <map>
-/* #include <time.h> */
-/* #include <stdlib.h> */
-/* #include <locale> */
-/* #include <sstream> */
-/* #include <algorithm> */
-/* #include <iterator> */
 
 #define DELIMETER ','
 
@@ -47,10 +41,7 @@ class CsvLine : public string
 class CsvSubsets : public CsvLine
 {
 	private:
-		bool					hasHash_;
 		vector<int>				deprecates_;
-		vector<int>				hashedData_;
-		vector<vector<string> >	hashTable_;
 		vector<int>				subsetsIndex_;
 		int						subsetsNum_;
 
@@ -58,7 +49,7 @@ class CsvSubsets : public CsvLine
 
 	public:
 		CsvSubsets():
-			hasHash_(false), deprecates_(0), hashedData_(0), hashTable_(0), subsetsIndex_(0), subsetsNum_(0)
+			deprecates_(0), subsetsIndex_(0), subsetsNum_(0)
 		{};
 		virtual ~CsvSubsets() {};
 		void		indexing();
@@ -68,8 +59,6 @@ class CsvSubsets : public CsvLine
 		
 		vector<int>	deprecates() {return deprecates_;}
 		int			subsetsNum() {return subsetsNum_;}
-
-		/* void		hashedData(const vector<vector<string> >& hashedData) {hashedData = } */
 };
 
 	/* main class */
@@ -91,11 +80,9 @@ class CsvData
 	};
 	virtual	~CsvData() {};
 	vector<vector<string> >	toMatrixString();
-	vector<vector<double> >	toMatrixDouble(const bool& hashData=false);
+	vector<vector<double> >	toMatrixDouble();
 	vector<string>			toVectorString(const int& id);
 	vector<double>			toVectorDouble(const int& id);
-	/* vector<double>			toVectorDouble(const string& id); */
-	/* vector<string>			toVectorString(const string& id); */
 
 	string					line(const int lineNum) {return static_cast<string>(lines_[lineNum]);}
 	string					infoLine() {return static_cast<string>(subsets_);}

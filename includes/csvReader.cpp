@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 07:41:28 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/26 11:04:04 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/27 10:15:07 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,20 +156,12 @@ vector<vector<string> >	CsvData::toMatrixString()
 	return strVect;
 }
 
-vector<vector<double> >	CsvData::toMatrixDouble(const bool& hashData)
+vector<vector<double> >	CsvData::toMatrixDouble()
 {
 	vector<int> deprecates = subsets_.deprecates();
 	vector<vector<double> > ret;
-	if (hashData){			//working on hashTable
-
-	}
 	for (int i = 0; i < lines_.size(); i++){
-		if (hashData){
-
-		}
-		else {
-			ret.emplace_back(lines_[i].toDouble(deprecates));
-		}
+		ret.emplace_back(lines_[i].toDouble(deprecates));
 	}
 	return ret;
 }
@@ -196,34 +188,4 @@ vector<double>	CsvData::toVectorDouble(const int& id)
 		ret.emplace_back(lines_[i].toDouble(id));
 	}
 	return ret;
-}
-
-
-
-int	main()
-{
-	CsvData data("files/dataset_train.csv");
-	data.deprecate("Index");
-	data.deprecate("Defense Against the Dark Arts");
-	data.deprecate("Charms");
-	data.deprecate("Herbology");
-	data.deprecate("Divination");
-	data.deprecate("Muggle Studies");
-	/* vector<vector<string> > dataStr =	data.toMatrixString(); */
-	vector<vector<double> > dataDoub =	data.toMatrixDouble();
-	/* vector<string> y =	data.toVectorString(19); */
-	/* vector<double> y =	data.toVectorDouble(0); */
-
-	/* for ( auto const& coutY : y ){ */
-	/* 	cout << coutY << "\n"; */
-	/* } */
-	for( auto const& string_vec : dataDoub ){
-		for( auto const& s : string_vec ){
-        	cout << s << ' ';
-        	/* cout << s << ' '; */
-		}
-        cout << endl;
-	}
-
-	return (0);
 }

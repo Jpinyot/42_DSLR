@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 07:39:51 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/27 10:14:24 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/27 12:36:15 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,12 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <Eigen/Dense>
 
 #define DELIMETER ','
 
 using namespace std;
+using namespace Eigen;
 
 	/* line from the csv file */
 class CsvLine : public string
@@ -31,8 +33,9 @@ class CsvLine : public string
 		CsvLine()
 		{};
 		virtual ~CsvLine() {};
-		vector<string>	toStrings(const vector<int>& desprecate={});
-		vector<double>	toDouble(const vector<int>& desprecate={});
+		vector<string>	toVecString(const vector<int>& desprecate={});
+		vector<double>	toVecDouble(const vector<int>& desprecate={});
+		ArrayXd			toArrayDouble(const int& size, const vector<int>& desprecate={});
 		string			toString(const int& id);
 		double			toDouble(const int& id);
 };
@@ -59,6 +62,7 @@ class CsvSubsets : public CsvLine
 		
 		vector<int>	deprecates() {return deprecates_;}
 		int			subsetsNum() {return subsetsNum_;}
+		int			subsetsNeeded() {return subsetsNum_ - deprecates_.size();}
 };
 
 	/* main class */
@@ -79,8 +83,9 @@ class CsvData
 		getData();
 	};
 	virtual	~CsvData() {};
-	vector<vector<string> >	toMatrixString();
-	vector<vector<double> >	toMatrixDouble();
+	MatrixXd				toMatrixDouble();
+	vector<vector<string> >	toVecVecString();
+	vector<vector<double> >	toVecVecDouble();
 	vector<string>			toVectorString(const int& id);
 	vector<double>			toVectorDouble(const int& id);
 

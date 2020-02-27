@@ -6,7 +6,7 @@
 #    By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/12 12:28:11 by jpinyot           #+#    #+#              #
-#    Updated: 2020/02/25 09:13:23 by jpinyot          ###   ########.fr        #
+#    Updated: 2020/02/27 11:18:34 by jpinyot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,9 @@ add_executable(	DSLR
 				includes/csvReader.cpp)
 			set(HEADER_FILES	DSLR
 								includes/csvReader.cpp)
+
+find_package (Eigen3 3.3 REQUIRED NO_MODULE)
+target_link_libraries (DSLR Eigen3::Eigen)
 
 
 # dependencies for Python.h, used for ploting

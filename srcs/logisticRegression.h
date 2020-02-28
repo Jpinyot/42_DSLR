@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 09:11:07 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/28 09:48:25 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/28 11:57:59 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ class LogisticRegression
 		/* CsvData		dataTest_; */
 		MatrixXd	X_;
 		ArrayXd		y_;
+
+		inline void			standarizeX();
 
 	public:
 		LogisticRegression(const string& dataTrain):

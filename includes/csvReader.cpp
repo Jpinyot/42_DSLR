@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 07:41:28 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/27 12:40:34 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/28 07:51:46 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,15 +172,10 @@ void	CsvData::getData()
 
 MatrixXd				CsvData::toMatrixDouble()
 {
-	/* cout << subsets_.subsetsNeeded() << "\n\n"; */
 	int rowSize = subsets_.subsetsNeeded();
 	vector<int> deprecates = subsets_.deprecates();
 	MatrixXd	ret(lines_.size(), rowSize);
-	/* MatrixXd	ret(rowSize, lines_.size()); */
 	for (int i = 0; i < lines_.size(); i++){
-	/* for (int i = 0; i < 20; i++){ */
-		/* ret.row(i) = (lines_[i].toDouble(deprecates)); */
-		/* cout << (lines_[i].toArrayDouble(rowSize, deprecates)); */
 		ret.row(i) = (lines_[i].toArrayDouble(rowSize, deprecates));
 	}
 	return ret;
@@ -228,40 +223,4 @@ vector<double>	CsvData::toVectorDouble(const int& id)
 		ret.emplace_back(lines_[i].toDouble(id));
 	}
 	return ret;
-}
-
-
-
-int	main()
-{
-	CsvData data("files/dataset_train.csv");
-	data.deprecate("Index");
-	data.deprecate("Hogwarts House");
-	data.deprecate("First Name");
-	data.deprecate("Last Name");
-	data.deprecate("Best Hand");
-	/* data.deprecate("Defense Against the Dark Arts"); */
-	/* data.deprecate("Charms"); */
-	/* data.deprecate("Herbology"); */
-	/* data.deprecate("Divination"); */
-	/* data.deprecate("Muggle Studies"); */
-	/* vector<vector<string> > dataStr =	data.toVecVecString(); */
-	/* vector<vector<double> > dataStr =	data.toVecVecDouble(); */
-	MatrixXd dataDoub =	data.toMatrixDouble();
-	/* vector<string> y =	data.toVectorString(19); */
-	/* vector<double> y =	data.toVectorDouble(0); */
-
-	cout << dataDoub;
-	/* for ( auto const& coutY : y ){ */
-	/* 	cout << coutY << "\n"; */
-	/* } */
-	/* for( auto const& string_vec : dataStr ){ */
-	/* 	for( auto const& s : string_vec ){ */
-        	/* cout << s << ' '; */
-        	/* /1* cout << s << ' '; *1/ */
-	/* 	} */
-        /* cout << endl; */
-	/* } */
-
-	return (0);
 }

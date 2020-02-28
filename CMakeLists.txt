@@ -6,7 +6,7 @@
 #    By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/12 12:28:11 by jpinyot           #+#    #+#              #
-#    Updated: 2020/02/27 11:18:34 by jpinyot          ###   ########.fr        #
+#    Updated: 2020/02/28 09:12:55 by jpinyot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,9 +19,11 @@ project(DSLR)
 # add the executable
 # DSLR
 add_executable(	DSLR
+				srcs/logisticRegression.cpp
 				includes/csvReader.cpp)
 			set(HEADER_FILES	DSLR
-								includes/csvReader.cpp)
+								srcs/logisticRegression.h
+								includes/csvReader.h)
 
 find_package (Eigen3 3.3 REQUIRED NO_MODULE)
 target_link_libraries (DSLR Eigen3::Eigen)

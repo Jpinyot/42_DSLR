@@ -6,10 +6,12 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 09:11:07 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/29 15:00:01 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/29 15:21:05 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <vector>
+#include <algorithm>
 #include "../includes/csvReader.h"
 #include <Eigen/Dense>
 
@@ -18,17 +20,19 @@ using namespace std;
 class LogisticRegression
 {
 	private:
-		CsvData		dataTrain_;
+		CsvData			dataTrain_;
 		/* CsvData		dataTest_; */
-		MatrixXd	X_;
-		ArrayXd		y_;
-		MatrixXd	XNorm_;
+		MatrixXd		X_;
+		vector<string>	y_;
+		vector<string>	yClasses_;
+		MatrixXd		XNorm_;
 
 		void			standarizeX();
+		void			yClasses();
 
 	public:
 		LogisticRegression(const string& dataTrain):
-			dataTrain_(dataTrain), X_(), y_(), XNorm_()
+			dataTrain_(dataTrain), X_(), y_(0), yClasses_(0), XNorm_()
 		{}
 		virtual	~LogisticRegression() {};
 		void		train();

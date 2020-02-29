@@ -6,26 +6,22 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 09:11:53 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/28 12:17:09 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/29 14:59:29 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "logisticRegression.h"
 
-https://stats.stackexchange.com/questions/289215/how-to-standardize-the-data-matrix-before-applying-svd-for-pca
-https://gist.github.com/kevinhughes27/6356673
-
 inline void	LogisticRegression::standarizeX()
 {
-	ArrayXd	mean(X_.cols(), 1);
-	mean = X_.colwise().mean();//colwise aplies individualy to each colum
-	/* cout << mean << "\n"; */
+	VectorXd mean(X_.cols(), 1);
+	mean = X_.colwise().mean();
+	VectorXd	stdDeviation(X_.cols(), 1);
+	stdDeviation = (X_.rowwise() - mean.transpose()).array().pow(2).colwise().sum() / X_.rows();
 
-	ArrayXd	stdDeviation(X_.cols(), 1);
-	stdDeviation = X_.rowwise() - mean;
-	/* stdDeviation = (X_.colwise() - mean.transpose()).array().pow(2).rowwise().sum() / X_.cols(); */
-	/* cout << X_.colwise() << "\n"; */
-	cout << stdDeviation << "\n";
+	XNorm_ = MatrixXd(X_.cols(), X_.rows());
+	XNorm_ = (X_.rowwise() - mean.transpose()).array().rowwise() / stdDeviation.transpose().array();
+	cout << XNorm_ << "\n\n" ;
 }
 
 inline void	LogisticRegression::train()			//inlin can give error

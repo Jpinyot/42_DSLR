@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 09:11:53 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/29 15:29:58 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/29 16:15:26 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ inline void	LogisticRegression::standarizeX()
 
 	XNorm_ = MatrixXd(X_.cols(), X_.rows());
 	XNorm_ = (X_.rowwise() - mean.transpose()).array().rowwise() / stdDeviation.transpose().array();
-	/* cout << XNorm_ << "\n\n" ; */
 }
 
 inline void	LogisticRegression::yClasses()
@@ -29,9 +28,14 @@ inline void	LogisticRegression::yClasses()
 	for(int i = 0; i < y_.size(); i++){
 		if (find(yClasses_.begin(), yClasses_.end(), y_[i]) == yClasses_.end()){
 			yClasses_.emplace_back(y_[i]);
-			/* cout << y_[i] << "\n\n"; */
 		}
 	}
+}
+
+inline double	LogisticRegression::sigmoid(const double& x)
+{
+	return 1.0 / (1.0 + exp(x * -1));
+	/* return x / (1 + abs(x));	//approximateVersion */
 }
 
 inline void	LogisticRegression::train()			//inlin can give error
@@ -41,14 +45,12 @@ inline void	LogisticRegression::train()			//inlin can give error
 		standarizeX();
 	}
 	if (!y_.size()){
-		y_ = dataTrain_.toVectorString(1);	//need new method to automatize y selection
+		y_ = dataTrain_.toVectorString(1);
 		yClasses();
-		/* cout << y_[10] << "\n\n"; */
 	}
 	for (int i = 0; i < yClasses_.size(); i++){
 		for (int j = 0; j < y_.size(); j++){
-			int y = yClasses_[i] ? y_[j] : 0 , 1;
-
+			int y = (yClasses_[i] == y_[j]) ? 1 : 0;
 		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 09:11:07 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/29 15:21:05 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/29 16:03:57 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ class LogisticRegression
 
 		void			standarizeX();
 		void			yClasses();
+		double			sigmoid(const double& x);
 
 	public:
 		LogisticRegression(const string& dataTrain):

@@ -6,16 +6,18 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 09:11:07 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/03/03 08:07:27 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/03/03 11:56:56 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <vector>
 #include <algorithm>
+#include <cmath>
 #include "../includes/csvReader.h"
 #include <Eigen/Dense>
 
-#define CYCLES 50
+#define CYCLES 5000
+#define LEARNING_RATE 0.02
 
 using namespace std;
 
@@ -26,6 +28,7 @@ class LogisticRegression
 		/* CsvData			dataTest_; */
 		MatrixXd			X_;
 		vector<VectorXd>	y_;
+		vector<VectorXd>	thetas_;
 		/* vector<string>	y_; */
 		vector<string>		yClasses_;
 		MatrixXd			XNorm_;
@@ -36,7 +39,7 @@ class LogisticRegression
 
 	public:
 		LogisticRegression(const string& dataTrain):
-			dataTrain_(dataTrain), X_(), y_(0), yClasses_(0), XNorm_()
+			dataTrain_(dataTrain), X_(), y_(0), thetas_(0), yClasses_(0), XNorm_()
 		{}
 		virtual	~LogisticRegression() {};
 		void		train();

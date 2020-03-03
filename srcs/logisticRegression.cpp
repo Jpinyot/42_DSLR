@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 09:11:53 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/29 16:15:26 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/03/03 08:30:32 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,20 @@ inline void	LogisticRegression::standarizeX()
 
 inline void	LogisticRegression::yClasses()
 {
-	for(int i = 0; i < y_.size(); i++){
-		if (find(yClasses_.begin(), yClasses_.end(), y_[i]) == yClasses_.end()){
-			yClasses_.emplace_back(y_[i]);
+	vector<string> y = dataTrain_.toVectorString(1);
+	int size = y.size();
+	vector<string>::iterator it;
+
+	for(int i = 0; i < size; i++){
+		if ((it = find(yClasses_.begin(), yClasses_.end(), y[i])) == yClasses_.end()){
+			yClasses_.emplace_back(y[i]);
+			y_.emplace_back(VectorXd::Zero(size, 1));
+		}
+		else {
+			y_[it - yClasses_.begin()](i, 0) = 1;
 		}
 	}
+	/* cout << y_[0] << "\n" << y_.size();; */
 }
 
 inline double	LogisticRegression::sigmoid(const double& x)
@@ -45,12 +54,13 @@ inline void	LogisticRegression::train()			//inlin can give error
 		standarizeX();
 	}
 	if (!y_.size()){
-		y_ = dataTrain_.toVectorString(1);
+		/* y_ = dataTrain_.toVectorString(1); */
 		yClasses();
 	}
 	for (int i = 0; i < yClasses_.size(); i++){
-		for (int j = 0; j < y_.size(); j++){
-			int y = (yClasses_[i] == y_[j]) ? 1 : 0;
+		for (int j = 0; j < CYCLES; j++){
+			/* int y = (yClasses_[i] == y_[j]) ? 1 : 0; */
+			/* (X_ * -1).exp(); */
 		}
 	}
 }

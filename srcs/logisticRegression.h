@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 09:11:07 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/29 16:03:57 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/03/03 08:07:27 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,20 @@
 #include "../includes/csvReader.h"
 #include <Eigen/Dense>
 
+#define CYCLES 50
+
 using namespace std;
 
 class LogisticRegression
 {
 	private:
-		CsvData			dataTrain_;
-		/* CsvData		dataTest_; */
-		MatrixXd		X_;
-		vector<string>	y_;
-		vector<string>	yClasses_;
-		MatrixXd		XNorm_;
+		CsvData				dataTrain_;
+		/* CsvData			dataTest_; */
+		MatrixXd			X_;
+		vector<VectorXd>	y_;
+		/* vector<string>	y_; */
+		vector<string>		yClasses_;
+		MatrixXd			XNorm_;
 
 		void			standarizeX();
 		void			yClasses();

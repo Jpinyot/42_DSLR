@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 09:11:53 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/03/03 08:30:32 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/03/03 11:56:06 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,15 @@ inline void	LogisticRegression::standarizeX()
 inline void	LogisticRegression::yClasses()
 {
 	vector<string> y = dataTrain_.toVectorString(1);
-	int size = y.size();
+	int rows = y.size();
+	int cols = X_.cols();
 	vector<string>::iterator it;
 
-	for(int i = 0; i < size; i++){
+	for(int i = 0; i < rows; i++){
 		if ((it = find(yClasses_.begin(), yClasses_.end(), y[i])) == yClasses_.end()){
 			yClasses_.emplace_back(y[i]);
-			y_.emplace_back(VectorXd::Zero(size, 1));
+			y_.emplace_back(VectorXd::Zero(rows, 1));
+			thetas_.emplace_back(VectorXd::Zero(cols, 1));
 		}
 		else {
 			y_[it - yClasses_.begin()](i, 0) = 1;
@@ -54,15 +56,22 @@ inline void	LogisticRegression::train()			//inlin can give error
 		standarizeX();
 	}
 	if (!y_.size()){
-		/* y_ = dataTrain_.toVectorString(1); */
 		yClasses();
 	}
 	for (int i = 0; i < yClasses_.size(); i++){
 		for (int j = 0; j < CYCLES; j++){
-			/* int y = (yClasses_[i] == y_[j]) ? 1 : 0; */
-			/* (X_ * -1).exp(); */
+			VectorXd sigmoid = 1 / (1 + ((-X_ * thetas_[i]).array()).exp());
+			VectorXd sum = (sigmoid.array() - y_[i].array()).array();
+			VectorXd dot = (sum.transpose() * X_) / X_.cols();
+			thetas_[i] += LEARNING_RATE * dot;
 		}
 	}
+	 VectorXd sigmoid = 1 / (1 + ((-X_ * thetas_[0]).array()).exp());
+	 VectorXd sum = (sigmoid.array() - y_[0].array()).array();
+	 VectorXd dot = (sum.transpose() * X_) / X_.cols();
+	 thetas_[0] += LEARNING_RATE * dot;
+	
+	 cout << thetas_[0] << "\n\n" << sum.rows() << "\n\n";
 }
 
 

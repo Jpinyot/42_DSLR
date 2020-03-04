@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 09:11:53 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/03/04 08:46:19 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/03/04 10:26:47 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,11 @@ inline void	LogisticRegression::yClasses()
 		if ((it = find(yClasses_.begin(), yClasses_.end(), y[i])) == yClasses_.end()){
 			yClasses_.emplace_back(y[i]);
 			y_.emplace_back(VectorXd::Zero(rows, 1));
+			y_.back()(i, 0) = 1;
 			thetas_.emplace_back(VectorXd::Zero(cols, 1));
 		}
 		else {
-			y_[it - yClasses_.begin()](i, 0) = 1;
+			y_[it - yClasses_.begin()](i, 0) = 1;			//need to pass to 1 when find new class
 		}
 	}
 	/* cout << y_[0] << "\n" << y_.size();; */
@@ -51,32 +52,41 @@ inline double	LogisticRegression::sigmoid(const double& x)
 
 inline void	LogisticRegression::train()			//inlin can give error
 {
+
+	vector<double>	plotVec;
+
 	if (!X_.size()){
 		X_ = dataTrain_.toMatrixDouble();
+	write(1, "$", 1);
 		standarizeX();
 	}
 	if (!y_.size()){
 		yClasses();
 	}
+	cout << "<<<<" << X_.size() << ">>>>\n\n";
+
 	for (int i = 0; i < yClasses_.size(); i++){
 		for (int j = 0; j < CYCLES; j++){
 			VectorXd sigmoid = 1 / (1 + ((-XNorm_ * thetas_[i]).array()).exp());
 			VectorXd sum = (sigmoid.array() - y_[i].array()).array();
-			VectorXd dot = (sum.transpose() * XNorm_) / XNorm_.cols();
-			thetas_[i] += LEARNING_RATE * dot;
+			VectorXd dot = (sum.transpose() * XNorm_) / XNorm_.rows();
+			thetas_[i] -= LEARNING_RATE * dot;
+
+			if (i == 0){
+				plotVec.emplace_back(sum.sum());
+			}
 		}
 	}
-	 /* VectorXd sigmoid = 1 / (1 + ((-XNorm_ * thetas_[0]).array()).exp()); */
-	 /* VectorXd sum = (sigmoid.array() - y_[0].array()).array(); */
-	 /* VectorXd dot = (sum.transpose() * XNorm_) / XNorm_.cols(); */
-	 /* thetas_[0] += LEARNING_RATE * dot; */
-	/* for (int i = 0; i < thetas_.size(); i++){ */
-	/* 	cout << thetas_[i] << "\n\n"; */
-	/* } */
+
+	/* Plot plotData; */
+
+	/* plotData.initialize(); */
+	/* plotData.plot(plotVec); */
+	/* plotData.show(); */
 
 		/* cout << thetas_[0] << "\n\n" << XNorm_.row(0) << "\n\n"; */
-	for (int i = 0; i < 100; i++){
-		cout << 1 / (1 + ((-XNorm_.row(i) * thetas_[0]).array()).exp()) << " " << y_[0].row(i) << "\n";
+	/* for (int i = 0; i < 100; i++){ */
+	/* 	cout << 1 / (1 + ((-XNorm_.row(i) * thetas_[0]).array()).exp()) << " " << y_[0].row(i) << "\n"; */
 		/* return ((1 / (1 + ((-inputs*this->w).array() - b).exp())).array() > 0.5).cast<double>(); */
 		/* cout << ((-XNorm_.row(i) * thetas_[0]).array()) << "\n\n"; */
 		/* auto res = 1 / (1 + ((-XNorm_.row(i) * thetas_[0]).array()).exp()); */
@@ -84,7 +94,7 @@ inline void	LogisticRegression::train()			//inlin can give error
 		/* if (res.isEqual()){ */
 		/* 	cout << "---" << i << "---\n"; */
 		/* } */
-	}
+	/* } */
 }
 
 
@@ -95,8 +105,12 @@ int main()
 	logReg.dataDeprecate("Index");
 	logReg.dataDeprecate("Hogwarts House");
 	logReg.dataDeprecate("First Name");
-	logReg.dataDeprecate("Last Name");
-	logReg.dataDeprecate("Best Hand");
+	logReg.dataDeprecate("Birthday");
+	logReg.dataDeprecate("Defense Against the Dark Arts");
+	/* logReg.dataDeprecate("Care of Magical Creatures"); */
+	/* logReg.dataDeprecate("Arithmancy"); */
+	/* logReg.dataDeprecate("Best Ha"); */
+	/* logReg.dataDeprecate("Best Hand"); */
 	logReg.train();
 
 	/* vector<vector<double> > dataDoub =	logReg.toMatrixDouble(); */

@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 09:11:07 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/03/03 11:56:56 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/03/04 08:05:38 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 #include "../includes/csvReader.h"
 #include <Eigen/Dense>
 
-#define CYCLES 5000
-#define LEARNING_RATE 0.02
+#define CYCLES 1000
+#define LEARNING_RATE 0.2
 
 using namespace std;
 

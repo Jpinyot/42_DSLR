@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 09:11:53 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/03/03 11:56:06 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/03/04 08:46:19 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,18 +60,31 @@ inline void	LogisticRegression::train()			//inlin can give error
 	}
 	for (int i = 0; i < yClasses_.size(); i++){
 		for (int j = 0; j < CYCLES; j++){
-			VectorXd sigmoid = 1 / (1 + ((-X_ * thetas_[i]).array()).exp());
+			VectorXd sigmoid = 1 / (1 + ((-XNorm_ * thetas_[i]).array()).exp());
 			VectorXd sum = (sigmoid.array() - y_[i].array()).array();
-			VectorXd dot = (sum.transpose() * X_) / X_.cols();
+			VectorXd dot = (sum.transpose() * XNorm_) / XNorm_.cols();
 			thetas_[i] += LEARNING_RATE * dot;
 		}
 	}
-	 VectorXd sigmoid = 1 / (1 + ((-X_ * thetas_[0]).array()).exp());
-	 VectorXd sum = (sigmoid.array() - y_[0].array()).array();
-	 VectorXd dot = (sum.transpose() * X_) / X_.cols();
-	 thetas_[0] += LEARNING_RATE * dot;
-	
-	 cout << thetas_[0] << "\n\n" << sum.rows() << "\n\n";
+	 /* VectorXd sigmoid = 1 / (1 + ((-XNorm_ * thetas_[0]).array()).exp()); */
+	 /* VectorXd sum = (sigmoid.array() - y_[0].array()).array(); */
+	 /* VectorXd dot = (sum.transpose() * XNorm_) / XNorm_.cols(); */
+	 /* thetas_[0] += LEARNING_RATE * dot; */
+	/* for (int i = 0; i < thetas_.size(); i++){ */
+	/* 	cout << thetas_[i] << "\n\n"; */
+	/* } */
+
+		/* cout << thetas_[0] << "\n\n" << XNorm_.row(0) << "\n\n"; */
+	for (int i = 0; i < 100; i++){
+		cout << 1 / (1 + ((-XNorm_.row(i) * thetas_[0]).array()).exp()) << " " << y_[0].row(i) << "\n";
+		/* return ((1 / (1 + ((-inputs*this->w).array() - b).exp())).array() > 0.5).cast<double>(); */
+		/* cout << ((-XNorm_.row(i) * thetas_[0]).array()) << "\n\n"; */
+		/* auto res = 1 / (1 + ((-XNorm_.row(i) * thetas_[0]).array()).exp()); */
+		/* auto y = y_[0].row(i); */
+		/* if (res.isEqual()){ */
+		/* 	cout << "---" << i << "---\n"; */
+		/* } */
+	}
 }
 
 

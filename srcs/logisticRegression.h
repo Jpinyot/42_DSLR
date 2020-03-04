@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 09:11:07 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/03/04 10:02:33 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/03/04 10:55:40 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 #include "../includes/plot.h"
 
-#define CYCLES 5000
+#define CYCLES 10000
 #define LEARNING_RATE 0.2
 
 using namespace std;

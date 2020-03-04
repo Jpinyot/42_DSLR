@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 09:11:53 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/03/04 10:26:47 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/03/04 11:38:32 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,12 @@ inline void	LogisticRegression::train()			//inlin can give error
 
 	if (!X_.size()){
 		X_ = dataTrain_.toMatrixDouble();
-	write(1, "$", 1);
 		standarizeX();
 	}
 	if (!y_.size()){
 		yClasses();
 	}
-	cout << "<<<<" << X_.size() << ">>>>\n\n";
+	/* cout << "<<<<" << XNorm_ << ">>>>\n\n"; */
 
 	for (int i = 0; i < yClasses_.size(); i++){
 		for (int j = 0; j < CYCLES; j++){
@@ -78,23 +77,22 @@ inline void	LogisticRegression::train()			//inlin can give error
 		}
 	}
 
-	/* Plot plotData; */
+	Plot plotData;
 
-	/* plotData.initialize(); */
-	/* plotData.plot(plotVec); */
-	/* plotData.show(); */
+	plotData.initialize();
+	plotData.plot(plotVec);
+	plotData.show();
 
 		/* cout << thetas_[0] << "\n\n" << XNorm_.row(0) << "\n\n"; */
-	/* for (int i = 0; i < 100; i++){ */
-	/* 	cout << 1 / (1 + ((-XNorm_.row(i) * thetas_[0]).array()).exp()) << " " << y_[0].row(i) << "\n"; */
+	for (int i = 0; i < 100; i++){
+		cout << 1 / (1 + ((-XNorm_.row(i) * thetas_[0]).array()).exp()) << " " << y_[0].row(i) << "\n";
 		/* return ((1 / (1 + ((-inputs*this->w).array() - b).exp())).array() > 0.5).cast<double>(); */
 		/* cout << ((-XNorm_.row(i) * thetas_[0]).array()) << "\n\n"; */
 		/* auto res = 1 / (1 + ((-XNorm_.row(i) * thetas_[0]).array()).exp()); */
 		/* auto y = y_[0].row(i); */
 		/* if (res.isEqual()){ */
 		/* 	cout << "---" << i << "---\n"; */
-		/* } */
-	/* } */
+	}
 }
 
 
@@ -105,12 +103,13 @@ int main()
 	logReg.dataDeprecate("Index");
 	logReg.dataDeprecate("Hogwarts House");
 	logReg.dataDeprecate("First Name");
+	logReg.dataDeprecate("Last Name");
+	logReg.dataDeprecate("Best Hand");
 	logReg.dataDeprecate("Birthday");
+
 	logReg.dataDeprecate("Defense Against the Dark Arts");
-	/* logReg.dataDeprecate("Care of Magical Creatures"); */
-	/* logReg.dataDeprecate("Arithmancy"); */
-	/* logReg.dataDeprecate("Best Ha"); */
-	/* logReg.dataDeprecate("Best Hand"); */
+	logReg.dataDeprecate("Care of Magical Creatures");
+	logReg.dataDeprecate("Arithmancy");
 	logReg.train();
 
 	/* vector<vector<double> > dataDoub =	logReg.toMatrixDouble(); */

@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 09:11:53 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/03/04 11:38:32 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/03/05 11:55:15 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,12 @@ inline void	LogisticRegression::yClasses()
 			thetas_.emplace_back(VectorXd::Zero(cols, 1));
 		}
 		else {
-			y_[it - yClasses_.begin()](i, 0) = 1;			//need to pass to 1 when find new class
+			y_[it - yClasses_.begin()](i, 0) = 1;
 		}
 	}
-	/* cout << y_[0] << "\n" << y_.size();; */
 }
 
-inline double	LogisticRegression::sigmoid(const double& x)
-{
-	return 1.0 / (1.0 + exp(x * -1));
-	/* return x / (1 + abs(x));	//approximateVersion */
-}
-
-inline void	LogisticRegression::train()			//inlin can give error
+inline void	LogisticRegression::train()
 {
 
 	vector<double>	plotVec;
@@ -62,7 +55,6 @@ inline void	LogisticRegression::train()			//inlin can give error
 	if (!y_.size()){
 		yClasses();
 	}
-	/* cout << "<<<<" << XNorm_ << ">>>>\n\n"; */
 
 	for (int i = 0; i < yClasses_.size(); i++){
 		for (int j = 0; j < CYCLES; j++){
@@ -72,26 +64,9 @@ inline void	LogisticRegression::train()			//inlin can give error
 			thetas_[i] -= LEARNING_RATE * dot;
 
 			if (i == 0){
-				plotVec.emplace_back(sum.sum());
+				plotVec.emplace_back(sum.sum());		//change for signal
 			}
 		}
-	}
-
-	Plot plotData;
-
-	plotData.initialize();
-	plotData.plot(plotVec);
-	plotData.show();
-
-		/* cout << thetas_[0] << "\n\n" << XNorm_.row(0) << "\n\n"; */
-	for (int i = 0; i < 100; i++){
-		cout << 1 / (1 + ((-XNorm_.row(i) * thetas_[0]).array()).exp()) << " " << y_[0].row(i) << "\n";
-		/* return ((1 / (1 + ((-inputs*this->w).array() - b).exp())).array() > 0.5).cast<double>(); */
-		/* cout << ((-XNorm_.row(i) * thetas_[0]).array()) << "\n\n"; */
-		/* auto res = 1 / (1 + ((-XNorm_.row(i) * thetas_[0]).array()).exp()); */
-		/* auto y = y_[0].row(i); */
-		/* if (res.isEqual()){ */
-		/* 	cout << "---" << i << "---\n"; */
 	}
 }
 
@@ -99,26 +74,16 @@ inline void	LogisticRegression::train()			//inlin can give error
 int main()
 {
 	LogisticRegression logReg("files/dataset_train.csv");
-	/* CsvData data("files/dataset_train.csv"); */
-	logReg.dataDeprecate("Index");
-	logReg.dataDeprecate("Hogwarts House");
-	logReg.dataDeprecate("First Name");
-	logReg.dataDeprecate("Last Name");
-	logReg.dataDeprecate("Best Hand");
-	logReg.dataDeprecate("Birthday");
+	logReg.drop("Index");
+	logReg.drop("Hogwarts House");
+	logReg.drop("First Name");
+	logReg.drop("Last Name");
+	logReg.drop("Best Hand");
+	logReg.drop("Birthday");
 
-	logReg.dataDeprecate("Defense Against the Dark Arts");
-	logReg.dataDeprecate("Care of Magical Creatures");
-	logReg.dataDeprecate("Arithmancy");
+	logReg.drop("Defense Against the Dark Arts");
+	logReg.drop("Care of Magical Creatures");
+	logReg.drop("Arithmancy");
 	logReg.train();
-
-	/* vector<vector<double> > dataDoub =	logReg.toMatrixDouble(); */
-	/* for( auto const& string_vec : dataDoub ){ */
-	/* 	for( auto const& s : string_vec ){ */
-        	/* cout << s << ' '; */
-        	/* /1* cout << s << ' '; *1/ */
-	/* 	} */
-        /* cout << endl; */
-	/* } */
 	return 0;
 }

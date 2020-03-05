@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 09:11:07 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/03/04 10:55:40 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/03/05 11:53:58 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,10 @@
 #include "../includes/csvReader.h"
 #include <Eigen/Dense>
 
-#include "../includes/plot.h"
+#include <unistd.h>
+/* #include "../includes/plot.h" */
 
-#define CYCLES 10000
+#define CYCLES 5000
 #define LEARNING_RATE 0.2
 
 using namespace std;
@@ -27,17 +28,14 @@ class LogisticRegression
 {
 	private:
 		CsvData				dataTrain_;
-		/* CsvData			dataTest_; */
 		MatrixXd			X_;
 		vector<VectorXd>	y_;
 		vector<VectorXd>	thetas_;
-		/* vector<string>	y_; */
 		vector<string>		yClasses_;
 		MatrixXd			XNorm_;
 
 		void			standarizeX();
 		void			yClasses();
-		double			sigmoid(const double& x);
 
 	public:
 		LogisticRegression(const string& dataTrain):
@@ -48,9 +46,8 @@ class LogisticRegression
 
 
 		inline MatrixXd		X() {return dataTrain_.toMatrixDouble();}
-		/* inline ArrayXd		y() {return y_;}				//need information about the y line of data */
-		inline bool			dataDeprecate(const string& str) {return dataTrain_.deprecate(str);}		//drop
-		inline bool			dataDeprecate(const int& num) {return dataTrain_.deprecate(num);}
+		inline bool			drop(const string& str) {return dataTrain_.drop(str);}
+		inline bool			drop(const int& num) {return dataTrain_.drop(num);}
 		inline string		dataLine(const int& lineNum) {return dataTrain_.line(lineNum);}
 		inline string		dataInfoLine() {return dataTrain_.infoLine();}
 };

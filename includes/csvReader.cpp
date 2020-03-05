@@ -6,13 +6,13 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 07:41:28 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/03/04 11:54:26 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/03/05 10:45:11 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "csvReader.h"
 
-inline vector<string>	CsvLine::toVecString(const vector<int>& desprecate)
+vector<string>	CsvLine::toVecString(const vector<int>& desprecate)
 {
 	vector<string>	ret = {};
 	int				nextDelimeter = 0;
@@ -35,7 +35,7 @@ inline vector<string>	CsvLine::toVecString(const vector<int>& desprecate)
 	return ret;
 }
 
-inline vector<double>	CsvLine::toVecDouble(const vector<int>& desprecate)
+vector<double>	CsvLine::toVecDouble(const vector<int>& desprecate)
 {
 	vector<double>	ret = {};
 	int				nextDelimeter = 0;
@@ -58,7 +58,7 @@ inline vector<double>	CsvLine::toVecDouble(const vector<int>& desprecate)
 	return ret;
 }
 
-inline ArrayXd			CsvLine::toArrayDouble(const int& size, const vector<int>& desprecate)
+ArrayXd			CsvLine::toArrayDouble(const int& size, const vector<int>& desprecate)
 {
 	ArrayXd			ret(size, 1);
 	int				nextDelimeter = 0;
@@ -81,7 +81,7 @@ inline ArrayXd			CsvLine::toArrayDouble(const int& size, const vector<int>& desp
 	return ret;
 }
 
-inline string	CsvLine::toString(const int& id)
+string	CsvLine::toString(const int& id)
 {
 	int				nextDelimeter = 0;
 	int				passDelimeter = 0;
@@ -96,7 +96,7 @@ inline string	CsvLine::toString(const int& id)
 	return 0;
 }
 
-inline double	CsvLine::toDouble(const int& id)
+double	CsvLine::toDouble(const int& id)
 {
 	int				nextDelimeter = 0;
 	int				passDelimeter = 0;
@@ -111,7 +111,7 @@ inline double	CsvLine::toDouble(const int& id)
 	return 0;
 }
 
-inline int		CsvSubsets::indexOf(int indx)
+int		CsvSubsets::indexOf(int indx)
 {
 	for (int i = 0; i < subsetsIndex_.size(); i++){
 		if (subsetsIndex_[i] == indx){
@@ -121,7 +121,7 @@ inline int		CsvSubsets::indexOf(int indx)
 	return -1;
 }
 
-inline void	CsvSubsets::indexing()
+void	CsvSubsets::indexing()
 {
 	subsetsIndex_.emplace_back(0);
 	subsetsNum_ += 1;
@@ -132,7 +132,7 @@ inline void	CsvSubsets::indexing()
 	}
 }
 
-inline bool	CsvSubsets::drop(const string& s)
+bool	CsvSubsets::drop(const string& s)
 {
 	int pos = 0;
 	if ((pos = this->find(s)) == -1){
@@ -142,7 +142,7 @@ inline bool	CsvSubsets::drop(const string& s)
 	return true;
 }
 
-inline bool	CsvSubsets::drop(const int& num)
+bool	CsvSubsets::drop(const int& num)
 {
 	if (num > subsetsNum_){
 		return false;
@@ -153,7 +153,7 @@ inline bool	CsvSubsets::drop(const int& num)
 	}
 }
 
-inline void	CsvData::getData()
+void	CsvData::getData()
 {
 	ifstream file(fileDescriptor_);
 	if (!file || !getline(file, subsets_)){
@@ -170,7 +170,7 @@ inline void	CsvData::getData()
 	}
 }
 
-inline MatrixXd	CsvData::toMatrixDouble()
+MatrixXd	CsvData::toMatrixDouble()
 {
 	int rowSize = subsets_.subsetsNeeded();
 	vector<int> drops = subsets_.drops();
@@ -181,7 +181,7 @@ inline MatrixXd	CsvData::toMatrixDouble()
 	return ret;
 }
 
-inline vector<vector<string> >	CsvData::toVecVecString()
+vector<vector<string> >	CsvData::toVecVecString()
 {
 	vector<int> drops = subsets_.drops();
 	vector<vector<string> > strVect;
@@ -191,7 +191,7 @@ inline vector<vector<string> >	CsvData::toVecVecString()
 	return strVect;
 }
 
-inline vector<vector<double> >	CsvData::toVecVecDouble()
+vector<vector<double> >	CsvData::toVecVecDouble()
 {
 	vector<int> drops = subsets_.drops();
 	vector<vector<double> > ret;
@@ -201,7 +201,7 @@ inline vector<vector<double> >	CsvData::toVecVecDouble()
 	return ret;
 }
 
-inline vector<string>	CsvData::toVectorString(const int& id)
+vector<string>	CsvData::toVectorString(const int& id)
 {
 	if (id > subsets_.subsetsNum()){
 		return {};
@@ -213,7 +213,7 @@ inline vector<string>	CsvData::toVectorString(const int& id)
 	return ret;
 }
 
-inline vector<double>	CsvData::toVectorDouble(const int& id)
+vector<double>	CsvData::toVectorDouble(const int& id)
 {
 	if (id > subsets_.subsetsNum()){
 		return {};

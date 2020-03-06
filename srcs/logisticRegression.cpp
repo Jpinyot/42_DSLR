@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 09:11:53 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/03/06 09:03:19 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/03/06 09:57:58 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,28 @@ inline void	LogisticRegression::train()
 	}
 }
 
+inline void	LogisticRegression::predict(const string& dataPredict)
+{
+	CsvData	file(dataPredict);
+	file.drop("Index");
+	file.drop("Hogwarts House");
+	file.drop("First Name");
+	file.drop("Last Name");
+	file.drop("Best Hand");
+	file.drop("Birthday");
+
+	file.drop("Defense Against the Dark Arts");
+	file.drop("Care of Magical Creatures");
+	file.drop("Arithmancy");
+	
+	MatrixXd predMat = file.toMatrixDouble();
+
+	for (int i = 0; i < thetas_.size(); i++){
+		VectorXd sigmoid = 1 / (1 + ((-XNorm_ * thetas_[i]).array()).exp());
+	}
+
+}
+
 inline void	LogisticRegression::thetaFile(const string& thetaFile)
 {
 	ofstream file(thetaFile);
@@ -113,6 +135,8 @@ int main()
 	logReg.drop("Care of Magical Creatures");
 	logReg.drop("Arithmancy");
 	logReg.train();
-	logReg.thetaFile();
+	/* logReg.thetaFile(); */
+
+	logReg.predict("files/dataset_test.csv");
 	return 0;
 }

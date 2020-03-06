@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 09:11:53 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/03/05 11:55:15 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/03/06 09:03:19 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,11 @@
 
 inline void	LogisticRegression::standarizeX()
 {
-	VectorXd mean(X_.cols(), 1);
-	mean = X_.colwise().mean();
-	VectorXd	stdDeviation(X_.cols(), 1);
-	stdDeviation = (X_.rowwise() - mean.transpose()).array().pow(2).colwise().sum() / X_.rows();
+	mean_ = X_.colwise().mean();
+	stdDeviation_ = (X_.rowwise() - mean_.transpose()).array().pow(2).colwise().sum() / X_.rows();
 
 	XNorm_ = MatrixXd(X_.cols(), X_.rows());
-	XNorm_ = (X_.rowwise() - mean.transpose()).array().rowwise() / stdDeviation.transpose().array();
+	XNorm_ = (X_.rowwise() - mean_.transpose()).array().rowwise() / stdDeviation_.transpose().array();
 }
 
 inline void	LogisticRegression::yClasses()
@@ -70,6 +68,36 @@ inline void	LogisticRegression::train()
 	}
 }
 
+inline void	LogisticRegression::thetaFile(const string& thetaFile)
+{
+	ofstream file(thetaFile);
+	if (!file){
+		//MAAAAL
+	}
+	file << MEAN << '\n';
+	for (int i = 0; i < mean_.size(); i++){
+		file << mean_(i, 0);
+		if (i + 1 < mean_.size())
+			file << ',';
+	}
+	file << '\n' << STD_DEVIATION << '\n';
+	for (int i = 0; i < stdDeviation_.size(); i++){
+		file << stdDeviation_(i, 0);
+		if (i + 1 < stdDeviation_.size())
+			file << ',';
+	}
+	file << '\n' << THETA;
+	for (int i = 0; i < thetas_.size(); i++){
+		file << "\n" << yClasses_[i] << "\n";
+		for (int j = 0; j < thetas_[i].size(); j++){
+			file << thetas_[i](j, 0);
+			if (j + 1 < thetas_[i].size())
+				file << ',';
+		}
+	}
+	file.close();
+}
+
 
 int main()
 {
@@ -85,5 +113,6 @@ int main()
 	logReg.drop("Care of Magical Creatures");
 	logReg.drop("Arithmancy");
 	logReg.train();
+	logReg.thetaFile();
 	return 0;
 }

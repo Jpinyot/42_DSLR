@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 09:11:07 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/03/09 09:56:30 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/03/09 12:16:45 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ using namespace std;
 enum lineFlags
 {
 	noFlag = 0,
-	meanFlag = 2,
-	stdDeviationFlag = 4,
-	thetaFlag = 8,
+	thetaFlag = 2,
+	meanFlag = 4,
+	stdDeviationFlag = 8,
 	unknowFlag = 16
 };
 
@@ -53,8 +53,9 @@ class LogisticRegression
 		VectorXd			stdDeviation_;
 
 		void			standarizeX();
+		MatrixXd		standarize(const MatrixXd& X);
 		void			yClasses();			//Need dataTrain
-		void			setThetaFile(const string& thetaFile=THETA_FILE);
+		void			getThetaFile(const string& thetaFile=THETA_FILE);
 		lineFlags		setLineFlag(const string& str);
 		VectorXd		vectorFromCsv(const string& str);
 
@@ -62,16 +63,15 @@ class LogisticRegression
 		LogisticRegression(const string& dataTrain):
 			haveData_(true), dataTrain_(dataTrain), X_(), y_(0), thetas_(0), yClasses_(0), XNorm_(), mean_(), stdDeviation_()
 		{}
-		/* LogisticRegression(const string& thetaFile=THETA_FILE): */
 		LogisticRegression():
 			haveData_(false), dataTrain_(), X_(), y_(0), thetas_(0), yClasses_(0), XNorm_(), mean_(), stdDeviation_()
 		{
-			setThetaFile();
+			getThetaFile();
 		}
 		virtual	~LogisticRegression() {};
 		void				train();
 		void				predict(const string& dataPredict);
-		void				thetaFile(const string& thetaFile=THETA_FILE);	//CREATE FLAG FOR, NEED JUST ONE FILE NAME ALWAYS!!
+		void				setThetaFile(const string& thetaFile=THETA_FILE);	//CREATE FLAG FOR, NEED JUST ONE FILE NAME ALWAYS!!
 
 		inline MatrixXd		X() {return X_;}
 		inline bool			drop(const string& str) {return dataTrain_.drop(str);}

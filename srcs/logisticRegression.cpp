@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 09:11:53 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/03/09 10:52:31 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/03/09 12:21:54 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,13 @@ inline void	LogisticRegression::standarizeX()
 
 	XNorm_ = MatrixXd(X_.cols(), X_.rows());
 	XNorm_ = (X_.rowwise() - mean_.transpose()).array().rowwise() / stdDeviation_.transpose().array();
+}
+
+inline MatrixXd	LogisticRegression::standarize(const MatrixXd& X)
+{
+	MatrixXd ret(X.cols(), X.rows());
+	ret = (X.rowwise() - mean_.transpose()).array().rowwise() / stdDeviation_.transpose().array();
+	return ret;
 }
 
 inline void	LogisticRegression::yClasses()
@@ -41,12 +48,11 @@ inline void	LogisticRegression::yClasses()
 	}
 }
 
-inline void LogisticRegression::setThetaFile(const string& thetaFile)
+inline void LogisticRegression::getThetaFile(const string& thetaFile)
 {
-	/* ofstream file(thetaFile); */
 	ifstream file(thetaFile);
 	if (!file){
-		//When there is no file!!
+		cout << "NO FILE!!"; //When there is no file!!
 	}
 	else{
 		string		line = "";
@@ -58,6 +64,11 @@ inline void LogisticRegression::setThetaFile(const string& thetaFile)
 			}
 			else {
 				switch (lineFlag){
+					case thetaFlag:
+						if (lineIsClass) yClasses_.emplace_back(line);
+						else thetas_.emplace_back(vectorFromCsv(line));
+						lineIsClass = !lineIsClass;
+						break;
 					case meanFlag:
 						mean_ = vectorFromCsv(line);
 						lineFlag = noFlag;
@@ -66,26 +77,12 @@ inline void LogisticRegression::setThetaFile(const string& thetaFile)
 						stdDeviation_ = vectorFromCsv(line);
 						lineFlag = noFlag;
 						break;
-					case thetaFlag:
-						if (lineIsClass){
-							yClasses_.emplace_back(line);
-						}
-						else {
-							thetas_.emplace_back(vectorFromCsv(line));
-						}
-						lineIsClass = !lineIsClass;
-						break;
 					default :
 						lineFlag = noFlag;
 						break;
 				}
 			}
 		}
-		
-	}
-	for(int i = 0; i < thetas_.size(); i++){
-		cout << yClasses_[i] << "\n";
-		cout << thetas_[i] << "\n\n";
 	}
 }
 
@@ -110,7 +107,6 @@ inline VectorXd	LogisticRegression::vectorFromCsv(const string& str)
 	VectorXd		ret(count(str.begin(), str.end(), DELIMETER) + 1, 1);
 	int				nextDelimeter = 0;
 	int				passDelimeter = 0;
-	/* int				despCnt = 0; */
 	int				i = 0;
 	while ((nextDelimeter = str.find(DELIMETER, nextDelimeter + 1)) != -1){
 		ret(i, 0) = (atof(&str[passDelimeter]));
@@ -160,21 +156,22 @@ inline void	LogisticRegression::predict(const string& dataPredict)
 
 	file.drop("Defense Against the Dark Arts");
 	file.drop("Care of Magical Creatures");
-	file.drop("Arithmancy");
-	
-	MatrixXd predMat = file.toMatrixDouble();
+	file.drop("Arithmancy");						//NEED TO PASS IN THETA FILE
+
+	MatrixXd XNorm = standarize(file.toMatrixDouble());
+	vector<VectorXd> ret;
 
 	for (int i = 0; i < thetas_.size(); i++){
-		VectorXd sigmoid = 1 / (1 + ((-XNorm_ * thetas_[i]).array()).exp());
+		VectorXd sigmoid = 1 / (1 + ((-XNorm * thetas_[i]).array()).exp());
+		ret.emplace_back(sigmoid);
 	}
-
 }
 
-inline void	LogisticRegression::thetaFile(const string& thetaFile)
+inline void	LogisticRegression::setThetaFile(const string& thetaFile)
 {
 	ofstream file(thetaFile);
 	if (!file){
-		//When haven't open the file
+		cout << "Error opening file.\n";//When haven't open the file
 	}
 	file << MEAN << '\n';
 	for (int i = 0; i < mean_.size(); i++){
@@ -204,6 +201,7 @@ inline void	LogisticRegression::thetaFile(const string& thetaFile)
 int main()
 {
 	LogisticRegression	logReg;
+	logReg.predict("files/dataset_train.csv");
 
 
 	/* LogisticRegression logReg("files/dataset_train.csv"); */

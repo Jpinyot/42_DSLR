@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 09:11:07 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/03/09 12:16:45 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/03/09 19:23:52 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ class LogisticRegression
 {
 	private:
 		bool				haveData_;
+		int					cycles_;
+		double				learningRate_;
 		CsvData				dataTrain_;
 		MatrixXd			X_;
 		vector<VectorXd>	y_;
@@ -60,11 +62,11 @@ class LogisticRegression
 		VectorXd		vectorFromCsv(const string& str);
 
 	public:
-		LogisticRegression(const string& dataTrain):
-			haveData_(true), dataTrain_(dataTrain), X_(), y_(0), thetas_(0), yClasses_(0), XNorm_(), mean_(), stdDeviation_()
+		LogisticRegression(const string& dataTrain, const int& cycles=CYCLES, const double& learningRate=LEARNING_RATE):
+			haveData_(true), cycles_(cycles), learningRate_(learningRate), dataTrain_(dataTrain), X_(), y_(0), thetas_(0), yClasses_(0), XNorm_(), mean_(), stdDeviation_()
 		{}
-		LogisticRegression():
-			haveData_(false), dataTrain_(), X_(), y_(0), thetas_(0), yClasses_(0), XNorm_(), mean_(), stdDeviation_()
+		LogisticRegression(const int& cycles=CYCLES, const double& learningRate=LEARNING_RATE):
+			haveData_(true), cycles_(cycles), learningRate_(learningRate), dataTrain_(), X_(), y_(0), thetas_(0), yClasses_(0), XNorm_(), mean_(), stdDeviation_()
 		{
 			getThetaFile();
 		}

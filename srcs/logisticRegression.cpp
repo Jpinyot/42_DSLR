@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 09:11:53 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/03/06 09:57:58 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/03/09 10:52:31 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,86 @@ inline void	LogisticRegression::yClasses()
 			y_[it - yClasses_.begin()](i, 0) = 1;
 		}
 	}
+}
+
+inline void LogisticRegression::setThetaFile(const string& thetaFile)
+{
+	/* ofstream file(thetaFile); */
+	ifstream file(thetaFile);
+	if (!file){
+		//When there is no file!!
+	}
+	else{
+		string		line = "";
+		lineFlags	lineFlag = noFlag;
+		bool		lineIsClass = true;
+		while (getline(file,line)){
+			if (lineFlag == noFlag){
+				lineFlag = setLineFlag(line);
+			}
+			else {
+				switch (lineFlag){
+					case meanFlag:
+						mean_ = vectorFromCsv(line);
+						lineFlag = noFlag;
+						break;
+					case stdDeviationFlag:
+						stdDeviation_ = vectorFromCsv(line);
+						lineFlag = noFlag;
+						break;
+					case thetaFlag:
+						if (lineIsClass){
+							yClasses_.emplace_back(line);
+						}
+						else {
+							thetas_.emplace_back(vectorFromCsv(line));
+						}
+						lineIsClass = !lineIsClass;
+						break;
+					default :
+						lineFlag = noFlag;
+						break;
+				}
+			}
+		}
+		
+	}
+	for(int i = 0; i < thetas_.size(); i++){
+		cout << yClasses_[i] << "\n";
+		cout << thetas_[i] << "\n\n";
+	}
+}
+
+inline lineFlags	LogisticRegression::setLineFlag(const string& str)
+{
+	if (str == MEAN){
+		return meanFlag;
+	}
+	else if (str == STD_DEVIATION){
+		return stdDeviationFlag;
+	}
+	else if (str == THETA){
+		return thetaFlag;
+	}
+	else {
+		return unknowFlag;
+	}
+}
+
+inline VectorXd	LogisticRegression::vectorFromCsv(const string& str)
+{
+	VectorXd		ret(count(str.begin(), str.end(), DELIMETER) + 1, 1);
+	int				nextDelimeter = 0;
+	int				passDelimeter = 0;
+	/* int				despCnt = 0; */
+	int				i = 0;
+	while ((nextDelimeter = str.find(DELIMETER, nextDelimeter + 1)) != -1){
+		ret(i, 0) = (atof(&str[passDelimeter]));
+		i ++;
+		passDelimeter = nextDelimeter + 1;
+	}
+	ret(i, 0) = (atof(&str[passDelimeter]));
+	return ret;
 }
 
 inline void	LogisticRegression::train()
@@ -94,7 +174,7 @@ inline void	LogisticRegression::thetaFile(const string& thetaFile)
 {
 	ofstream file(thetaFile);
 	if (!file){
-		//MAAAAL
+		//When haven't open the file
 	}
 	file << MEAN << '\n';
 	for (int i = 0; i < mean_.size(); i++){
@@ -123,20 +203,22 @@ inline void	LogisticRegression::thetaFile(const string& thetaFile)
 
 int main()
 {
-	LogisticRegression logReg("files/dataset_train.csv");
-	logReg.drop("Index");
-	logReg.drop("Hogwarts House");
-	logReg.drop("First Name");
-	logReg.drop("Last Name");
-	logReg.drop("Best Hand");
-	logReg.drop("Birthday");
+	LogisticRegression	logReg;
 
-	logReg.drop("Defense Against the Dark Arts");
-	logReg.drop("Care of Magical Creatures");
-	logReg.drop("Arithmancy");
-	logReg.train();
+
+	/* LogisticRegression logReg("files/dataset_train.csv"); */
+	/* logReg.drop("Index"); */
+	/* logReg.drop("Hogwarts House"); */
+	/* logReg.drop("First Name"); */
+	/* logReg.drop("Last Name"); */
+	/* logReg.drop("Best Hand"); */
+	/* logReg.drop("Birthday"); */
+
+	/* logReg.drop("Defense Against the Dark Arts"); */
+	/* logReg.drop("Care of Magical Creatures"); */
+	/* logReg.drop("Arithmancy"); */
+	/* logReg.train(); */
+	/* logReg.predict("files/dataset_test.csv"); */
 	/* logReg.thetaFile(); */
-
-	logReg.predict("files/dataset_test.csv");
 	return 0;
 }

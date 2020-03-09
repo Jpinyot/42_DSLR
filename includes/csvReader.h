@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 07:39:51 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/03/05 10:31:50 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/03/06 09:09:16 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,9 @@ class CsvData
 		{
 			getData();
 		};
+		CsvData():
+			fileDescriptor_(), lines_(0), data_(0), subsets_()
+		{};
 		virtual	~CsvData() {};
 		MatrixXd				toMatrixDouble();
 		vector<vector<string> >	toVecVecString();

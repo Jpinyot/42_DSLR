@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 09:11:53 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/03/09 12:21:54 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/03/09 19:24:30 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,11 +131,11 @@ inline void	LogisticRegression::train()
 	}
 
 	for (int i = 0; i < yClasses_.size(); i++){
-		for (int j = 0; j < CYCLES; j++){
+		for (int j = 0; j < cycles_; j++){
 			VectorXd sigmoid = 1 / (1 + ((-XNorm_ * thetas_[i]).array()).exp());
 			VectorXd sum = (sigmoid.array() - y_[i].array()).array();
 			VectorXd dot = (sum.transpose() * XNorm_) / XNorm_.rows();
-			thetas_[i] -= LEARNING_RATE * dot;
+			thetas_[i] -= learningRate_ * dot;
 
 			if (i == 0){
 				plotVec.emplace_back(sum.sum());		//change for signal

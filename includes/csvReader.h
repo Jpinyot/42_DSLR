@@ -27,7 +27,6 @@ using namespace Eigen;
 class CsvLine : public string
 {
 	private:
-		/* int	size_; */
 
 	public:
 		CsvLine()
@@ -56,8 +55,8 @@ class CsvSubsets : public CsvLine
 		{};
 		virtual ~CsvSubsets() {};
 		void		indexing();
-		bool		drop(const string& s);
-		bool		drop(const int& num);
+		int			drop(const string& s);
+		int			drop(const int& num);
 		bool		hashNeeded(const int& num);
 		
 		inline vector<int>	drops() {return drops_;}
@@ -91,9 +90,11 @@ class CsvData
 		vector<vector<double> >	toVecVecDouble();
 		vector<string>			toVectorString(const int& id);
 		vector<double>			toVectorDouble(const int& id);
+		vector<string>			y(const int& id);
+		vector<string>			y(const string& id);
 
 		inline string			line(const int lineNum) {return static_cast<string>(lines_[lineNum]);}
 		inline string			infoLine() {return static_cast<string>(subsets_);}
-		inline bool				drop(const string& s) {return subsets_.drop(s);}
-		inline bool				drop(const int& num) {return subsets_.drop(num);}
+		inline int				drop(const string& s) {return subsets_.drop(s);}
+		inline int				drop(const int& num) {return subsets_.drop(num);}
 };

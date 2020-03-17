@@ -132,24 +132,25 @@ void	CsvSubsets::indexing()
 	}
 }
 
-bool	CsvSubsets::drop(const string& s)
+int	CsvSubsets::drop(const string& s)
 {
 	int pos = 0;
 	if ((pos = this->find(s)) == -1){
-		return false;
+		return -1;
 	}
-	drops_.emplace_back(indexOf(pos));
-	return true;
+	int index = indexOf(pos);
+	drops_.emplace_back(index);
+	return index;
 }
 
-bool	CsvSubsets::drop(const int& num)
+int	CsvSubsets::drop(const int& num)
 {
-	if (num > subsetsNum_){
-		return false;
+	if (num > subsetsNum_ || num < 0){
+		return -1;
 	}
 	else {
 		drops_.emplace_back(num);
-		return true;
+		return num;
 	}
 }
 
@@ -203,7 +204,7 @@ vector<vector<double> >	CsvData::toVecVecDouble()
 
 vector<string>	CsvData::toVectorString(const int& id)
 {
-	if (id > subsets_.subsetsNum()){
+	if (id > subsets_.subsetsNum() || id < 0){
 		return {};
 	}
 	vector<string> ret;
@@ -215,7 +216,7 @@ vector<string>	CsvData::toVectorString(const int& id)
 
 vector<double>	CsvData::toVectorDouble(const int& id)
 {
-	if (id > subsets_.subsetsNum()){
+	if (id > subsets_.subsetsNum() || id < 0){
 		return {};
 	}
 	vector<double> ret;
@@ -223,4 +224,40 @@ vector<double>	CsvData::toVectorDouble(const int& id)
 		ret.emplace_back(lines_[i].toDouble(id));
 	}
 	return ret;
+}
+
+vector<string>	CsvData::y(const int& id)
+{
+	if (id > subsets_.subsetsNum() || id < 0){
+		return {};
+	}
+	subsets_.drop(id);
+	vector<string> ret;
+	for (int i = 0; i < lines_.size(); i++){
+		ret.emplace_back(lines_[i].toString(id));
+	}
+	return ret;
+}
+
+vector<string>	CsvData::y(const string& str)
+{
+	int id = subsets_.drop(str);
+	if (id > subsets_.subsetsNum() || id < 0){
+		return {};
+	}
+	vector<string> ret;
+	for (int i = 0; i < lines_.size(); i++){
+		ret.emplace_back(lines_[i].toString(id));
+	}
+	return ret;
+}
+
+int		main()
+{
+	CsvData data("files/dataset_train.csv");
+
+	/* data.y("First Name"); */
+	cout << data.y("First Name")[0];
+	
+	return 0;
 }

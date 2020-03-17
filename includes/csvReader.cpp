@@ -251,13 +251,3 @@ vector<string>	CsvData::y(const string& str)
 	}
 	return ret;
 }
-
-int		main()
-{
-	CsvData data("files/dataset_train.csv");
-
-	/* data.y("First Name"); */
-	cout << data.y("First Name")[0];
-	
-	return 0;
-}

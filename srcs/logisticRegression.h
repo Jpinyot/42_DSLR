@@ -27,6 +27,7 @@
 #define STD_DEVIATION "Standard Deviation"
 #define THETA "Thetas"
 #define DELIMETER ','
+#define PREDETERMINATE_Y 1
 
 using namespace std;
 
@@ -48,6 +49,7 @@ class LogisticRegression
 		CsvData				dataTrain_;
 		MatrixXd			X_;
 		vector<VectorXd>	y_;
+		vector<string>		yCol_;
 		vector<VectorXd>	thetas_;
 		vector<string>		yClasses_;
 		MatrixXd			XNorm_;
@@ -56,17 +58,17 @@ class LogisticRegression
 
 		void			standarizeX();
 		MatrixXd		standarize(const MatrixXd& X);
-		void			yClasses();			//Need dataTrain
+		void			yClasses(const int& id=PREDETERMINATE_Y);			//Need dataTrain
 		void			getThetaFile(const string& thetaFile=THETA_FILE);
 		lineFlags		setLineFlag(const string& str);
 		VectorXd		vectorFromCsv(const string& str);
 
 	public:
 		LogisticRegression(const string& dataTrain, const int& cycles=CYCLES, const double& learningRate=LEARNING_RATE):
-			haveData_(true), cycles_(cycles), learningRate_(learningRate), dataTrain_(dataTrain), X_(), y_(0), thetas_(0), yClasses_(0), XNorm_(), mean_(), stdDeviation_()
+			haveData_(true), cycles_(cycles), learningRate_(learningRate), dataTrain_(dataTrain), X_(), y_(0), yCol_(0), thetas_(0), yClasses_(0), XNorm_(), mean_(), stdDeviation_()
 		{}
 		LogisticRegression(const int& cycles=CYCLES, const double& learningRate=LEARNING_RATE):
-			haveData_(true), cycles_(cycles), learningRate_(learningRate), dataTrain_(), X_(), y_(0), thetas_(0), yClasses_(0), XNorm_(), mean_(), stdDeviation_()
+			haveData_(true), cycles_(cycles), learningRate_(learningRate), dataTrain_(), X_(), y_(0), thetas_(0), yClasses_(0), yCol_(0), XNorm_(), mean_(), stdDeviation_()
 		{
 			getThetaFile();
 		}
@@ -80,4 +82,6 @@ class LogisticRegression
 		inline bool			drop(const int& num) {return dataTrain_.drop(num);}
 		inline string		dataLine(const int& lineNum) {return dataTrain_.line(lineNum);}	//create a case when no dataTrain_
 		inline string		dataInfoLine() {return dataTrain_.infoLine();}
+		inline void			setY(const string& id) {yCol_ = dataTrain_.y(id);}
+		inline void			setY(const int& id) {yCol_ = dataTrain_.y(id);}
 };

@@ -28,16 +28,18 @@ inline MatrixXd	LogisticRegression::standarize(const MatrixXd& X)
 	return ret;
 }
 
-inline void	LogisticRegression::yClasses()
+inline void	LogisticRegression::yClasses(const int& id)
 {
-	vector<string> y = dataTrain_.toVectorString(1);
-	int rows = y.size();
+	if (!yCol_.size()){
+		yCol_ = dataTrain_.y(id);
+	}
+	int rows = yCol_.size();
 	int cols = X_.cols();
 	vector<string>::iterator it;
 
 	for(int i = 0; i < rows; i++){
-		if ((it = find(yClasses_.begin(), yClasses_.end(), y[i])) == yClasses_.end()){
-			yClasses_.emplace_back(y[i]);
+		if ((it = find(yClasses_.begin(), yClasses_.end(), yCol_[i])) == yClasses_.end()){
+			yClasses_.emplace_back(yCol_[i]);
 			y_.emplace_back(VectorXd::Zero(rows, 1));
 			y_.back()(i, 0) = 1;
 			thetas_.emplace_back(VectorXd::Zero(cols, 1));
@@ -119,9 +121,6 @@ inline VectorXd	LogisticRegression::vectorFromCsv(const string& str)
 
 inline void	LogisticRegression::train()
 {
-
-	vector<double>	plotVec;
-
 	if (!X_.size()){
 		X_ = dataTrain_.toMatrixDouble();
 		standarizeX();
@@ -136,11 +135,12 @@ inline void	LogisticRegression::train()
 			VectorXd sum = (sigmoid.array() - y_[i].array()).array();
 			VectorXd dot = (sum.transpose() * XNorm_) / XNorm_.rows();
 			thetas_[i] -= learningRate_ * dot;
-
-			if (i == 0){
-				plotVec.emplace_back(sum.sum());		//change for signal
-			}
 		}
+	}
+
+		VectorXd tmp = 1 / (1 + ((-XNorm_ * thetas_[0]).array()).exp());
+	for (int i = 0; i < 4; i++){
+		cout << tmp[i] << "\t" << y_[0][i] << "\n";
 	}
 }
 
@@ -197,26 +197,25 @@ inline void	LogisticRegression::setThetaFile(const string& thetaFile)
 	file.close();
 }
 
-
 int main()
 {
-	LogisticRegression	logReg;
-	logReg.predict("files/dataset_train.csv");
+	/* LogisticRegression	logReg; */
+	/* logReg.predict("files/dataset_train.csv"); */
 
 
-	/* LogisticRegression logReg("files/dataset_train.csv"); */
-	/* logReg.drop("Index"); */
+	LogisticRegression logReg("files/dataset_train.csv");
+	logReg.setY("Hogwarts House");
 	/* logReg.drop("Hogwarts House"); */
-	/* logReg.drop("First Name"); */
-	/* logReg.drop("Last Name"); */
-	/* logReg.drop("Best Hand"); */
-	/* logReg.drop("Birthday"); */
-
-	/* logReg.drop("Defense Against the Dark Arts"); */
-	/* logReg.drop("Care of Magical Creatures"); */
-	/* logReg.drop("Arithmancy"); */
-	/* logReg.train(); */
+	logReg.drop("Index");
+	logReg.drop("First Name");
+	logReg.drop("Last Name");
+	logReg.drop("Best Hand");
+	logReg.drop("Birthday");
+	logReg.drop("Defense Against the Dark Arts");
+	logReg.drop("Care of Magical Creatures");
+	logReg.drop("Arithmancy");
+	logReg.train();
+	/* logReg.setThetaFile(); */
 	/* logReg.predict("files/dataset_test.csv"); */
-	/* logReg.thetaFile(); */
 	return 0;
 }

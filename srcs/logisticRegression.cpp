@@ -137,11 +137,6 @@ inline void	LogisticRegression::train()
 			thetas_[i] -= learningRate_ * dot;
 		}
 	}
-
-		VectorXd tmp = 1 / (1 + ((-XNorm_ * thetas_[0]).array()).exp());
-	for (int i = 0; i < 4; i++){
-		cout << tmp[i] << "\t" << y_[0][i] << "\n";
-	}
 }
 
 inline void	LogisticRegression::predict(const string& dataPredict)
@@ -199,22 +194,21 @@ inline void	LogisticRegression::setThetaFile(const string& thetaFile)
 
 int main()
 {
-	/* LogisticRegression	logReg; */
-	/* logReg.predict("files/dataset_train.csv"); */
+	LogisticRegression	logReg;
+	logReg.predict("files/dataset_train.csv");
 
 
-	LogisticRegression logReg("files/dataset_train.csv");
-	logReg.setY("Hogwarts House");
-	/* logReg.drop("Hogwarts House"); */
-	logReg.drop("Index");
-	logReg.drop("First Name");
-	logReg.drop("Last Name");
-	logReg.drop("Best Hand");
-	logReg.drop("Birthday");
-	logReg.drop("Defense Against the Dark Arts");
-	logReg.drop("Care of Magical Creatures");
-	logReg.drop("Arithmancy");
-	logReg.train();
+	/* LogisticRegression logReg("files/dataset_train.csv"); */
+	/* logReg.setY("Hogwarts House"); */
+	/* logReg.drop("Index"); */
+	/* logReg.drop("First Name"); */
+	/* logReg.drop("Last Name"); */
+	/* logReg.drop("Best Hand"); */
+	/* logReg.drop("Birthday"); */
+	/* logReg.drop("Defense Against the Dark Arts"); */
+	/* logReg.drop("Care of Magical Creatures"); */
+	/* logReg.drop("Arithmancy"); */
+	/* logReg.train(); */
 	/* logReg.setThetaFile(); */
 	/* logReg.predict("files/dataset_test.csv"); */
 	return 0;

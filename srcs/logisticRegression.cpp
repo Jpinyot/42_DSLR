@@ -68,15 +68,19 @@ inline void LogisticRegression::getThetaFile(const string& thetaFile)
 				switch (lineFlag){
 					case thetaFlag:
 						if (lineIsClass) yClasses_.emplace_back(line);
-						else thetas_.emplace_back(vectorFromCsv(line));
+						else thetas_.emplace_back(vectorXdFromCsv(line));
 						lineIsClass = !lineIsClass;
 						break;
 					case meanFlag:
-						mean_ = vectorFromCsv(line);
+						mean_ = vectorXdFromCsv(line);
 						lineFlag = noFlag;
 						break;
 					case stdDeviationFlag:
-						stdDeviation_ = vectorFromCsv(line);
+						stdDeviation_ = vectorXdFromCsv(line);
+						lineFlag = noFlag;
+						break;
+					case dropsFlag:
+						drops_ = vectorIntFromCsv(line);
 						lineFlag = noFlag;
 						break;
 					default :
@@ -99,12 +103,15 @@ inline lineFlags	LogisticRegression::setLineFlag(const string& str)
 	else if (str == THETA){
 		return thetaFlag;
 	}
+	else if(str == DROPS){
+		return dropsFlag;
+	}
 	else {
 		return unknowFlag;
 	}
 }
 
-inline VectorXd	LogisticRegression::vectorFromCsv(const string& str)
+inline VectorXd	LogisticRegression::vectorXdFromCsv(const string& str)
 {
 	VectorXd		ret(count(str.begin(), str.end(), DELIMETER) + 1, 1);
 	int				nextDelimeter = 0;
@@ -116,6 +123,21 @@ inline VectorXd	LogisticRegression::vectorFromCsv(const string& str)
 		passDelimeter = nextDelimeter + 1;
 	}
 	ret(i, 0) = (atof(&str[passDelimeter]));
+	return ret;
+}
+
+inline vector<int>	LogisticRegression::vectorIntFromCsv(const string& str)
+{
+	vector<int>		ret;
+	int				nextDelimeter = 0;
+	int				passDelimeter = 0;
+	int				i = 0;
+	while ((nextDelimeter = str.find(DELIMETER, nextDelimeter + 1)) != -1){
+		ret.emplace_back(atof(&str[passDelimeter]));
+		i ++;
+		passDelimeter = nextDelimeter + 1;
+	}
+	ret.emplace_back(atof(&str[passDelimeter]));
 	return ret;
 }
 
@@ -142,16 +164,17 @@ inline void	LogisticRegression::train()
 inline void	LogisticRegression::predict(const string& dataPredict)
 {
 	CsvData	file(dataPredict);
-	file.drop("Index");
-	file.drop("Hogwarts House");
-	file.drop("First Name");
-	file.drop("Last Name");
-	file.drop("Best Hand");
-	file.drop("Birthday");
+	file.setDrops(drops_);
+	/* file.drop("Index"); */
+	/* file.drop("Hogwarts House"); */
+	/* file.drop("First Name"); */
+	/* file.drop("Last Name"); */
+	/* file.drop("Best Hand"); */
+	/* file.drop("Birthday"); */
 
-	file.drop("Defense Against the Dark Arts");
-	file.drop("Care of Magical Creatures");
-	file.drop("Arithmancy");						//NEED TO PASS IN THETA FILE
+	/* file.drop("Defense Against the Dark Arts"); */
+	/* file.drop("Care of Magical Creatures"); */
+	/* file.drop("Arithmancy");						//NEED TO PASS IN THETA FILE */
 
 	MatrixXd XNorm = standarize(file.toMatrixDouble());
 	vector<VectorXd> ret;
@@ -180,6 +203,13 @@ inline void	LogisticRegression::setThetaFile(const string& thetaFile)
 		if (i + 1 < stdDeviation_.size())
 			file << ',';
 	}
+	file << '\n' << DROPS << '\n';
+	vector<int> drops = dataTrain_.drops();
+	for (int i = 0; i < drops.size(); i++){
+		file << drops[i];
+		if (i + 1 < drops.size())
+			file << ',';
+	}
 	file << '\n' << THETA;
 	for (int i = 0; i < thetas_.size(); i++){
 		file << "\n" << yClasses_[i] << "\n";
@@ -189,6 +219,7 @@ inline void	LogisticRegression::setThetaFile(const string& thetaFile)
 				file << ',';
 		}
 	}
+
 	file.close();
 }
 

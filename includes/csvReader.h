@@ -62,6 +62,8 @@ class CsvSubsets : public CsvLine
 		inline vector<int>	drops() {return drops_;}
 		inline int			subsetsNum() {return subsetsNum_;}
 		inline int			subsetsNeeded() {return subsetsNum_ - drops_.size();}
+
+		inline void			setDrops(const vector<int>& drops) {drops_ = drops;}
 };
 
 	/* main class */
@@ -97,4 +99,6 @@ class CsvData
 		inline string			infoLine() {return static_cast<string>(subsets_);}
 		inline int				drop(const string& s) {return subsets_.drop(s);}
 		inline int				drop(const int& num) {return subsets_.drop(num);}
+		inline vector<int>		drops() {return subsets_.drops();}
+		inline void				setDrops(const vector<int>& drops) {subsets_.setDrops(drops);}
 };

@@ -194,22 +194,22 @@ inline void	LogisticRegression::setThetaFile(const string& thetaFile)
 
 int main()
 {
-	LogisticRegression	logReg;
-	logReg.predict("files/dataset_train.csv");
+	/* LogisticRegression	logReg; */
+	/* logReg.predict("files/dataset_train.csv"); */
 
 
-	/* LogisticRegression logReg("files/dataset_train.csv"); */
-	/* logReg.setY("Hogwarts House"); */
-	/* logReg.drop("Index"); */
-	/* logReg.drop("First Name"); */
-	/* logReg.drop("Last Name"); */
-	/* logReg.drop("Best Hand"); */
-	/* logReg.drop("Birthday"); */
-	/* logReg.drop("Defense Against the Dark Arts"); */
-	/* logReg.drop("Care of Magical Creatures"); */
-	/* logReg.drop("Arithmancy"); */
-	/* logReg.train(); */
-	/* logReg.setThetaFile(); */
-	/* logReg.predict("files/dataset_test.csv"); */
+	LogisticRegression logReg("files/dataset_train.csv");
+	logReg.setY("Hogwarts House");
+	logReg.drop("Index");
+	logReg.drop("First Name");
+	logReg.drop("Last Name");
+	logReg.drop("Best Hand");
+	logReg.drop("Birthday");
+	logReg.drop("Defense Against the Dark Arts");
+	logReg.drop("Care of Magical Creatures");
+	logReg.drop("Arithmancy");
+	logReg.train();
+	logReg.setThetaFile();
+	logReg.predict("files/dataset_test.csv");
 	return 0;
 }

@@ -165,17 +165,6 @@ inline void	LogisticRegression::predict(const string& dataPredict)
 {
 	CsvData	file(dataPredict);
 	file.setDrops(drops_);
-	/* file.drop("Index"); */
-	/* file.drop("Hogwarts House"); */
-	/* file.drop("First Name"); */
-	/* file.drop("Last Name"); */
-	/* file.drop("Best Hand"); */
-	/* file.drop("Birthday"); */
-
-	/* file.drop("Defense Against the Dark Arts"); */
-	/* file.drop("Care of Magical Creatures"); */
-	/* file.drop("Arithmancy");						//NEED TO PASS IN THETA FILE */
-
 	MatrixXd XNorm = standarize(file.toMatrixDouble());
 	vector<VectorXd> ret;
 
@@ -204,10 +193,10 @@ inline void	LogisticRegression::setThetaFile(const string& thetaFile)
 			file << ',';
 	}
 	file << '\n' << DROPS << '\n';
-	vector<int> drops = dataTrain_.drops();
-	for (int i = 0; i < drops.size(); i++){
-		file << drops[i];
-		if (i + 1 < drops.size())
+	drops_ = dataTrain_.drops();
+	for (int i = 0; i < drops_.size(); i++){
+		file << drops_[i];
+		if (i + 1 < drops_.size())
 			file << ',';
 	}
 	file << '\n' << THETA;

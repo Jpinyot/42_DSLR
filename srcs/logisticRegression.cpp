@@ -183,11 +183,6 @@ inline void	LogisticRegression::predict(const string& dataPredict)
 		VectorXd sigmoid = 1 / (1 + ((-XNorm * thetas_[i]).array()).exp());
 		ret.emplace_back(sigmoid);
 	}
-
-		/* VectorXd tmp = 1 / (1 + ((-XNorm_ * thetas_[0]).array()).exp()); */
-	for(int i =0; i < 100; i++){
-		cout << y_[0](i, 0) << "\t" << ret[0](i, 0) << "\n";
-	}
 }
 
 inline void	LogisticRegression::setThetaFile(const string& thetaFile)

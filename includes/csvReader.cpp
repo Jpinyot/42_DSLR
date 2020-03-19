@@ -174,7 +174,7 @@ void	CsvData::getData()
 MatrixXd	CsvData::toMatrixDouble()
 {
 	int rowSize = subsets_.subsetsNeeded();
-	vector<int> drops = subsets_.drops();
+	vector<int> drops = this->drops();
 	sort(drops.begin(), drops.end());
 	MatrixXd	ret(lines_.size(), rowSize);
 	for (int i = 0; i < lines_.size(); i++){
@@ -185,7 +185,7 @@ MatrixXd	CsvData::toMatrixDouble()
 
 vector<vector<string> >	CsvData::toVecVecString()
 {
-	vector<int> drops = subsets_.drops();
+	vector<int> drops = this->drops();
 	sort(drops.begin(), drops.end());
 	vector<vector<string> > strVect;
 	for (int i = 0; i < lines_.size(); i++){
@@ -196,7 +196,7 @@ vector<vector<string> >	CsvData::toVecVecString()
 
 vector<vector<double> >	CsvData::toVecVecDouble()
 {
-	vector<int> drops = subsets_.drops();
+	vector<int> drops = this->drops();
 	sort(drops.begin(), drops.end());
 	vector<vector<double> > ret;
 	for (int i = 0; i < lines_.size(); i++){

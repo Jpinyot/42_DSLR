@@ -26,6 +26,7 @@
 #define MEAN "Mean"
 #define STD_DEVIATION "Standard Deviation"
 #define THETA "Thetas"
+#define DROPS "Drops"
 #define DELIMETER ','
 #define PREDETERMINATE_Y 1
 
@@ -37,7 +38,8 @@ enum lineFlags
 	thetaFlag = 2,
 	meanFlag = 4,
 	stdDeviationFlag = 8,
-	unknowFlag = 16
+	dropsFlag = 16,
+	unknowFlag = 32
 };
 
 class LogisticRegression
@@ -55,20 +57,22 @@ class LogisticRegression
 		MatrixXd			XNorm_;
 		VectorXd			mean_;
 		VectorXd			stdDeviation_;
+		vector<int>			drops_;
 
 		void			standarizeX();
 		MatrixXd		standarize(const MatrixXd& X);
 		void			yClasses(const int& id=PREDETERMINATE_Y);			//Need dataTrain
 		void			getThetaFile(const string& thetaFile=THETA_FILE);
 		lineFlags		setLineFlag(const string& str);
-		VectorXd		vectorFromCsv(const string& str);
+		VectorXd		vectorXdFromCsv(const string& str);
+		vector<int>		vectorIntFromCsv(const string& str);
 
 	public:
 		LogisticRegression(const string& dataTrain, const int& cycles=CYCLES, const double& learningRate=LEARNING_RATE):
-			haveData_(true), cycles_(cycles), learningRate_(learningRate), dataTrain_(dataTrain), X_(), y_(0), yCol_(0), thetas_(0), yClasses_(0), XNorm_(), mean_(), stdDeviation_()
+			haveData_(true), cycles_(cycles), learningRate_(learningRate), dataTrain_(dataTrain), X_(), y_(0), yCol_(0), thetas_(0), yClasses_(0), XNorm_(), mean_(), stdDeviation_(), drops_(0)
 		{}
 		LogisticRegression(const int& cycles=CYCLES, const double& learningRate=LEARNING_RATE):
-			haveData_(true), cycles_(cycles), learningRate_(learningRate), dataTrain_(), X_(), y_(0), thetas_(0), yClasses_(0), yCol_(0), XNorm_(), mean_(), stdDeviation_()
+			haveData_(true), cycles_(cycles), learningRate_(learningRate), dataTrain_(), X_(), y_(0), thetas_(0), yClasses_(0), yCol_(0), XNorm_(), mean_(), stdDeviation_(), drops_(0)
 		{
 			getThetaFile();
 		}
